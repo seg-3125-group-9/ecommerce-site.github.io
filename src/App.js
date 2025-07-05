@@ -129,7 +129,6 @@ function App() {
 
   const [saleGenderFilters, setSaleGenderFilters] = useState([]); // for SALE page genders
   const [saleSectionFilters, setSaleSectionFilters] = useState([]); // for SALE page subsections (e.g., tops, bottoms)
-
   
   const toggleSaleGender = (gender) => {
     setSaleGenderFilters(prev => {
