@@ -1,70 +1,85 @@
 import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation
+} from 'react-router-dom';
 import './App.css';
 
 const homepageLabels = ['Bestseller', 'Popular', 'New', 'Trendy'];
 const productData = [
-  { id: 1, name: 'Red T-Shirt', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Red', material: 'Cotton', gender: 'Women', price: 24.99, style: 'Casual', trend: 'Bestseller', image: 'https://source.unsplash.com/200x250/?red,tshirt,women' },
-  { id: 2, name: 'White Blouse', section: 'tops', sizes: ['XS', 'S', 'M'], color: 'White', material: 'Silk', gender: 'Women', price: 34.99, image: 'https://source.unsplash.com/200x250/?white,blouse,women' },
-  { id: 3, name: 'Black Tank Top', section: 'tops', sizes: ['M', 'L', 'XL'], color: 'Black', material: 'Polyester', gender: 'Women', price: 19.99, image: 'https://source.unsplash.com/200x250/?black,tanktop,women' },
-  { id: 4, name: 'Striped Tee', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Blue', material: 'Cotton', gender: 'Women', price: 21.99, style: 'Casual', image: 'https://source.unsplash.com/200x250/?striped,tee,women' },
-  { id: 5, name: 'Pink Crop Top', section: 'tops', sizes: ['XS', 'S'], color: 'Pink', material: 'Linen', gender: 'Women', price: 27.99, trend: 'New', image: 'https://source.unsplash.com/200x250/?pink,crop-top,women' },
+  // Women's Tops
+  { id: 1, name: 'Red T-Shirt', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Red', material: 'Cotton', gender: 'Women', price: 24.99, style: 'Casual', trend: 'Bestseller', image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=200&h=250&fit=crop&crop=center', salePrice: 12.49 }, // 50% off
+  { id: 2, name: 'White Blouse', section: 'tops', sizes: ['XS', 'S', 'M'], color: 'White', material: 'Silk', gender: 'Women', price: 34.99, image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=200&h=250&fit=crop&crop=center' },
+  { id: 3, name: 'Black Tank Top', section: 'tops', sizes: ['M', 'L', 'XL'], color: 'Black', material: 'Polyester', gender: 'Women', price: 19.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center', salePrice: 12.49 }, // ~37% off
+  { id: 4, name: 'Striped Tee', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Blue', material: 'Cotton', gender: 'Women', price: 21.99, style: 'Casual', image: 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=200&h=250&fit=crop&crop=center' },
+  { id: 5, name: 'Pink Crop Top', section: 'tops', sizes: ['XS', 'S'], color: 'Pink', material: 'Linen', gender: 'Women', price: 27.99, trend: 'New', image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=200&h=250&fit=crop&crop=center', salePrice: 18.90 }, // ~32% off
 
-  { id: 6, name: 'Jeans', section: 'bottoms', sizes: ['S', 'M', 'L'], color: 'Blue', material: 'Denim', gender: 'Women', price: 39.99, image: 'https://source.unsplash.com/200x250/?jeans,women' },
-  { id: 7, name: 'Black Leggings', section: 'bottoms', sizes: ['XS', 'S', 'M'], color: 'Black', material: 'Spandex', gender: 'Women', price: 29.99, image: 'https://source.unsplash.com/200x250/?black,leggings,women' },
-  { id: 8, name: 'White Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'White', material: 'Cotton', gender: 'Women', price: 25.99, image: 'https://source.unsplash.com/200x250/?white,shorts,women' },
-  { id: 9, name: 'Plaid Skirt', section: 'bottoms', sizes: ['M', 'L'], color: 'Red', material: 'Wool', gender: 'Women', price: 33.99, image: 'https://source.unsplash.com/200x250/?plaid,skirt,women' },
-  { id: 10, name: 'Beige Trousers', section: 'bottoms', sizes: ['M', 'L', 'XL'], color: 'Beige', material: 'Linen', gender: 'Women', price: 37.99, style: 'Elegant', image: 'https://source.unsplash.com/200x250/?beige,trousers,women' },
+  // Women's Bottoms
+  { id: 6, name: 'Jeans', section: 'bottoms', sizes: ['S', 'M', 'L'], color: 'Blue', material: 'Denim', gender: 'Women', price: 39.99, image: 'https://images.unsplash.com/photo-1541840031508-326b77c9a17e?w=200&h=250&fit=crop&crop=center' },
+  { id: 7, name: 'Black Leggings', section: 'bottoms', sizes: ['XS', 'S', 'M'], color: 'Black', material: 'Spandex', gender: 'Women', price: 29.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center', salePrice: 15.00 }, // 50% off
+  { id: 8, name: 'White Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'White', material: 'Cotton', gender: 'Women', price: 25.99, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=250&fit=crop&crop=center' },
+  { id: 9, name: 'Plaid Skirt', section: 'bottoms', sizes: ['M', 'L'], color: 'Red', material: 'Wool', gender: 'Women', price: 33.99, image: 'https://images.unsplash.com/photo-1518049362265-d5b2a6467637?w=200&h=250&fit=crop&crop=center', salePrice: 24.99 }, // ~26% off
+  { id: 10, name: 'Beige Trousers', section: 'bottoms', sizes: ['M', 'L', 'XL'], color: 'Beige', material: 'Linen', gender: 'Women', price: 37.99, style: 'Elegant', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 11, name: 'Sandals', section: 'shoes', sizes: ['8', '9'], color: 'Beige', material: 'Leather', gender: 'Women', price: 41.99, image: 'https://source.unsplash.com/200x250/?sandals,women' },
-  { id: 12, name: 'Black Heels', section: 'shoes', sizes: ['7', '8'], color: 'Black', material: 'Suede', gender: 'Women', price: 47.99, trend: 'Classic', image: 'https://source.unsplash.com/200x250/?black,heels,women' },
-  { id: 13, name: 'Running Shoes', section: 'shoes', sizes: ['8', '9', '10'], color: 'White', material: 'Mesh', gender: 'Women', price: 59.99, image: 'https://source.unsplash.com/200x250/?running,shoes,women' },
-  { id: 14, name: 'Brown Boots', section: 'shoes', sizes: ['9', '10'], color: 'Brown', material: 'Leather', gender: 'Women', price: 64.99, style: 'Casual', image: 'https://source.unsplash.com/200x250/?brown,boots,women' },
-  { id: 15, name: 'Ballet Flats', section: 'shoes', sizes: ['6', '7'], color: 'Pink', material: 'Canvas', gender: 'Women', price: 35.99, image: 'https://source.unsplash.com/200x250/?ballet,flats,women' },
+  // Women's Shoes
+  { id: 11, name: 'Sandals', section: 'shoes', sizes: ['8', '9'], color: 'Beige', material: 'Leather', gender: 'Women', price: 41.99, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=200&h=250&fit=crop&crop=center', salePrice: 20.99 }, // 50% off
+  { id: 12, name: 'Black Heels', section: 'shoes', sizes: ['7', '8'], color: 'Black', material: 'Suede', gender: 'Women', price: 47.99, trend: 'Classic', image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=200&h=250&fit=crop&crop=center' },
+  { id: 13, name: 'Running Shoes', section: 'shoes', sizes: ['8', '9', '10'], color: 'White', material: 'Mesh', gender: 'Women', price: 59.99, image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&h=250&fit=crop&crop=center' },
+  { id: 14, name: 'Brown Boots', section: 'shoes', sizes: ['9', '10'], color: 'Brown', material: 'Leather', gender: 'Women', price: 64.99, style: 'Casual', image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=200&h=250&fit=crop&crop=center', salePrice: 44.49 }, // ~32% off
+  { id: 15, name: 'Ballet Flats', section: 'shoes', sizes: ['6', '7'], color: 'Pink', material: 'Canvas', gender: 'Women', price: 35.99, image: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 16, name: 'Floral Dress', section: 'dresses', sizes: ['S', 'M', 'L'], color: 'Pink', material: 'Silk', gender: 'Women', price: 54.99, trend: 'New', image: 'https://source.unsplash.com/200x250/?floral,dress,women' },
-  { id: 17, name: 'Black Maxi Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Black', material: 'Cotton', gender: 'Women', price: 49.99, image: 'https://source.unsplash.com/200x250/?black,maxi-dress,women' },
-  { id: 18, name: 'Red Mini Dress', section: 'dresses', sizes: ['XS', 'S'], color: 'Red', material: 'Linen', gender: 'Women', price: 46.99, style: 'Elegant', image: 'https://source.unsplash.com/200x250/?red,mini-dress,women' },
-  { id: 19, name: 'White Sundress', section: 'dresses', sizes: ['S', 'M'], color: 'White', material: 'Cotton', gender: 'Women', price: 52.99, image: 'https://source.unsplash.com/200x250/?white,sundress,women' },
-  { id: 20, name: 'Blue Wrap Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Blue', material: 'Polyester', gender: 'Women', price: 48.99, image: 'https://source.unsplash.com/200x250/?blue,wrap-dress,women' },
+  // Women's Dresses
+  { id: 16, name: 'Floral Dress', section: 'dresses', sizes: ['S', 'M', 'L'], color: 'Pink', material: 'Silk', gender: 'Women', price: 54.99, trend: 'New', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=200&h=250&fit=crop&crop=center' },
+  { id: 17, name: 'Black Maxi Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Black', material: 'Cotton', gender: 'Women', price: 49.99, image: 'https://images.unsplash.com/photo-1566479179817-0b0c80c82e14?w=200&h=250&fit=crop&crop=center', salePrice: 25.00 }, // 50% off
+  { id: 18, name: 'Red Mini Dress', section: 'dresses', sizes: ['XS', 'S'], color: 'Red', material: 'Linen', gender: 'Women', price: 46.99, style: 'Elegant', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=200&h=250&fit=crop&crop=center' },
+  { id: 19, name: 'White Sundress', section: 'dresses', sizes: ['S', 'M'], color: 'White', material: 'Cotton', gender: 'Women', price: 52.99, image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=200&h=250&fit=crop&crop=center', salePrice: 42.49 }, // ~20% off
+  { id: 20, name: 'Blue Wrap Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Blue', material: 'Polyester', gender: 'Women', price: 48.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 21, name: 'Men T-Shirt', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Green', material: 'Cotton', gender: 'Men', price: 23.99, image: 'https://source.unsplash.com/200x250/?green,tshirt,men' },
-  { id: 22, name: 'Polo Shirt', section: 'tops', sizes: ['M', 'L'], color: 'Blue', material: 'Cotton', gender: 'Men', price: 31.99, style: 'Preppy', image: 'https://source.unsplash.com/200x250/?polo,shirt,men' },
-  { id: 23, name: 'Henley', section: 'tops', sizes: ['M', 'L', 'XL'], color: 'Gray', material: 'Polyester', gender: 'Men', price: 27.99, image: 'https://source.unsplash.com/200x250/?henley,shirt,men' },
-  { id: 24, name: 'Long Sleeve Tee', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Black', material: 'Cotton', gender: 'Men', price: 29.99, image: 'https://source.unsplash.com/200x250/?long-sleeve,shirt,men' },
-  { id: 25, name: 'Graphic Tee', section: 'tops', sizes: ['XS', 'S', 'M'], color: 'White', material: 'Cotton', gender: 'Men', price: 25.99, trend: 'Bestseller', image: 'https://source.unsplash.com/200x250/?graphic,tee,men' },
+  // Men's Tops
+  { id: 21, name: 'Men T-Shirt', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Green', material: 'Cotton', gender: 'Men', price: 23.99, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=250&fit=crop&crop=center', salePrice: 11.99 }, // 50% off
+  { id: 22, name: 'Polo Shirt', section: 'tops', sizes: ['M', 'L'], color: 'Blue', material: 'Cotton', gender: 'Men', price: 31.99, style: 'Preppy', image: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=200&h=250&fit=crop&crop=center' },
+  { id: 23, name: 'Henley', section: 'tops', sizes: ['M', 'L', 'XL'], color: 'Gray', material: 'Polyester', gender: 'Men', price: 27.99, image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=200&h=250&fit=crop&crop=center' },
+  { id: 24, name: 'Long Sleeve Tee', section: 'tops', sizes: ['S', 'M', 'L'], color: 'Black', material: 'Cotton', gender: 'Men', price: 29.99, image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=200&h=250&fit=crop&crop=center', salePrice: 21.49 }, // ~28% off
+  { id: 25, name: 'Graphic Tee', section: 'tops', sizes: ['XS', 'S', 'M'], color: 'White', material: 'Cotton', gender: 'Men', price: 25.99, trend: 'Bestseller', image: 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 26, name: 'Chino Pants', section: 'bottoms', sizes: ['M', 'L'], color: 'Beige', material: 'Cotton', gender: 'Men', price: 37.99, image: 'https://source.unsplash.com/200x250/?chino,pants,men' },
-  { id: 27, name: 'Cargo Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Green', material: 'Cotton', gender: 'Men', price: 28.99, image: 'https://source.unsplash.com/200x250/?cargo,shorts,men' },
-  { id: 28, name: 'Slim Jeans', section: 'bottoms', sizes: ['M', 'L', 'XL'], color: 'Blue', material: 'Denim', gender: 'Men', price: 44.99, image: 'https://source.unsplash.com/200x250/?slim,jeans,men' },
-  { id: 29, name: 'Joggers', section: 'bottoms', sizes: ['S', 'M', 'L'], color: 'Gray', material: 'Fleece', gender: 'Men', price: 34.99, style: 'Athleisure', image: 'https://source.unsplash.com/200x250/?joggers,men' },
-  { id: 30, name: 'Dress Pants', section: 'bottoms', sizes: ['L', 'XL'], color: 'Black', material: 'Polyester', gender: 'Men', price: 49.99, image: 'https://source.unsplash.com/200x250/?dress,pants,men' },
+  // Men's Bottoms
+  { id: 26, name: 'Chino Pants', section: 'bottoms', sizes: ['M', 'L'], color: 'Beige', material: 'Cotton', gender: 'Men', price: 37.99, image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=200&h=250&fit=crop&crop=center' },
+  { id: 27, name: 'Cargo Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Green', material: 'Cotton', gender: 'Men', price: 28.99, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=250&fit=crop&crop=center', salePrice: 14.50 }, // 50% off
+  { id: 28, name: 'Slim Jeans', section: 'bottoms', sizes: ['M', 'L', 'XL'], color: 'Blue', material: 'Denim', gender: 'Men', price: 44.99, image: 'https://images.unsplash.com/photo-1541840031508-326b77c9a17e?w=200&h=250&fit=crop&crop=center' },
+  { id: 29, name: 'Joggers', section: 'bottoms', sizes: ['S', 'M', 'L'], color: 'Gray', material: 'Fleece', gender: 'Men', price: 34.99, style: 'Athleisure', image: 'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=200&h=250&fit=crop&crop=center', salePrice: 24.99 }, // ~29% off
+  { id: 30, name: 'Dress Pants', section: 'bottoms', sizes: ['L', 'XL'], color: 'Black', material: 'Polyester', gender: 'Men', price: 49.99, image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 31, name: 'Dress Shoes', section: 'shoes', sizes: ['9', '10'], color: 'Black', material: 'Leather', gender: 'Men', price: 69.99, style: 'Formal', image: 'https://source.unsplash.com/200x250/?dress,shoes,men' },
-  { id: 32, name: 'Sneakers', section: 'shoes', sizes: ['10', '11'], color: 'White', material: 'Mesh', gender: 'Men', price: 54.99, trend: 'Popular', image: 'https://source.unsplash.com/200x250/?sneakers,men' },
-  { id: 33, name: 'Boots', section: 'shoes', sizes: ['10', '11'], color: 'Brown', material: 'Leather', gender: 'Men', price: 74.99, image: 'https://source.unsplash.com/200x250/?boots,men' },
-  { id: 34, name: 'Loafers', section: 'shoes', sizes: ['9', '10'], color: 'Navy', material: 'Suede', gender: 'Men', price: 59.99, image: 'https://source.unsplash.com/200x250/?loafers,men' },
-  { id: 35, name: 'Flip Flops', section: 'shoes', sizes: ['8', '9'], color: 'Gray', material: 'Rubber', gender: 'Men', price: 17.99, image: 'https://source.unsplash.com/200x250/?flipflops,men' },
+  // Men's Shoes
+  { id: 31, name: 'Dress Shoes', section: 'shoes', sizes: ['9', '10'], color: 'Black', material: 'Leather', gender: 'Men', price: 69.99, style: 'Formal', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200&h=250&fit=crop&crop=center', salePrice: 35.00 }, // 50% off
+  { id: 32, name: 'Sneakers', section: 'shoes', sizes: ['10', '11'], color: 'White', material: 'Mesh', gender: 'Men', price: 54.99, trend: 'Popular', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&h=250&fit=crop&crop=center' },
+  { id: 33, name: 'Boots', section: 'shoes', sizes: ['10', '11'], color: 'Brown', material: 'Leather', gender: 'Men', price: 74.99, image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=200&h=250&fit=crop&crop=center' },
+  { id: 34, name: 'Loafers', section: 'shoes', sizes: ['9', '10'], color: 'Navy', material: 'Suede', gender: 'Men', price: 59.99, image: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=200&h=250&fit=crop&crop=center', salePrice: 41.99 }, // ~30% off
+  { id: 35, name: 'Flip Flops', section: 'shoes', sizes: ['8', '9'], color: 'Gray', material: 'Rubber', gender: 'Men', price: 17.99, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=200&h=250&fit=crop&crop=center' },
 
-  { id: 36, name: 'Kid Tee', section: 'tops', sizes: ['S', 'M'], color: 'Yellow', material: 'Cotton', gender: 'Kids', price: 14.99, image: 'https://source.unsplash.com/200x250/?kids,tshirt' },
-  { id: 37, name: 'Kid Hoodie', section: 'tops', sizes: ['M', 'L'], color: 'Red', material: 'Fleece', gender: 'Kids', price: 27.99, image: 'https://source.unsplash.com/200x250/?kids,hoodie' },
-  { id: 38, name: 'Kid Tank Top', section: 'tops', sizes: ['XS', 'S'], color: 'Green', material: 'Cotton', gender: 'Kids', price: 13.99, trend: 'New', image: 'https://source.unsplash.com/200x250/?kids,tanktop' },
-  { id: 39, name: 'Kid Long Sleeve', section: 'tops', sizes: ['S', 'M'], color: 'Blue', material: 'Polyester', gender: 'Kids', price: 21.99, image: 'https://source.unsplash.com/200x250/?kids,longsleeve' },
-  { id: 40, name: 'Kid Graphic Tee', section: 'tops', sizes: ['XS', 'S'], color: 'White', material: 'Cotton', gender: 'Kids', price: 15.99, image: 'https://source.unsplash.com/200x250/?kids,graphictee' },
+  // Kids' Tops
+  { id: 36, name: 'Kid Tee', section: 'tops', sizes: ['S', 'M'], color: 'Yellow', material: 'Cotton', gender: 'Kids', price: 14.99, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=250&fit=crop&crop=center' },
+  { id: 37, name: 'Kid Hoodie', section: 'tops', sizes: ['M', 'L'], color: 'Red', material: 'Fleece', gender: 'Kids', price: 27.99, image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=200&h=250&fit=crop&crop=center', salePrice: 14.00 }, // 50% off
+  { id: 38, name: 'Kid Tank Top', section: 'tops', sizes: ['XS', 'S'], color: 'Green', material: 'Cotton', gender: 'Kids', price: 13.99, trend: 'New', image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=200&h=250&fit=crop&crop=center' },
+  { id: 39, name: 'Kid Long Sleeve', section: 'tops', sizes: ['S', 'M'], color: 'Blue', material: 'Polyester', gender: 'Kids', price: 21.99, image: 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=200&h=250&fit=crop&crop=center' },
+  { id: 40, name: 'Kid Graphic Tee', section: 'tops', sizes: ['XS', 'S'], color: 'White', material: 'Cotton', gender: 'Kids', price: 15.99, image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=200&h=250&fit=crop&crop=center', salePrice: 8.00 }, // 50% off
 
-  { id: 41, name: 'Kid Joggers', section: 'bottoms', sizes: ['S', 'M'], color: 'Gray', material: 'Fleece', gender: 'Kids', price: 22.99, image: 'https://source.unsplash.com/200x250/?kids,joggers' },
-  { id: 42, name: 'Kid Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Blue', material: 'Cotton', gender: 'Kids', price: 19.99, image: 'https://source.unsplash.com/200x250/?kids,shorts' },
-  { id: 43, name: 'Kid Leggings', section: 'bottoms', sizes: ['XS', 'S'], color: 'Pink', material: 'Spandex', gender: 'Kids', price: 18.99, image: 'https://source.unsplash.com/200x250/?kids,leggings' },
-  { id: 44, name: 'Kid Jeans', section: 'bottoms', sizes: ['S', 'M'], color: 'Denim', material: 'Denim', gender: 'Kids', price: 23.99, image: 'https://source.unsplash.com/200x250/?kids,jeans' },
-  { id: 45, name: 'Kid Sweatpants', section: 'bottoms', sizes: ['S', 'M'], color: 'Black', material: 'Cotton', gender: 'Kids', price: 20.99, image: 'https://source.unsplash.com/200x250/?kids,sweatpants' },
+  // Kids' Bottoms
+  { id: 41, name: 'Kid Joggers', section: 'bottoms', sizes: ['S', 'M'], color: 'Gray', material: 'Fleece', gender: 'Kids', price: 22.99, image: 'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=200&h=250&fit=crop&crop=center' },
+  { id: 42, name: 'Kid Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Blue', material: 'Cotton', gender: 'Kids', price: 19.99, image: 'https://images.unsplash.com/photo-1506629905607-d405872dbc7d?w=200&h=250&fit=crop&crop=center', salePrice: 10.00 }, // ~50% off
+  { id: 43, name: 'Kid Leggings', section: 'bottoms', sizes: ['XS', 'S'], color: 'Pink', material: 'Spandex', gender: 'Kids', price: 18.99, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=250&fit=crop&crop=center' },
+  { id: 44, name: 'Kid Jeans', section: 'bottoms', sizes: ['S', 'M'], color: 'Denim', material: 'Denim', gender: 'Kids', price: 23.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center' },
+  { id: 45, name: 'Kid Sweatpants', section: 'bottoms', sizes: ['S', 'M'], color: 'Black', material: 'Cotton', gender: 'Kids', price: 20.99, image: 'https://images.unsplash.com/photo-1506629905607-d405872dbc7d?w=200&h=250&fit=crop&crop=center', salePrice: 14.39 }, // ~31% off
 
-  { id: 46, name: 'Kid Sneakers', section: 'shoes', sizes: ['2', '3'], color: 'Red', material: 'Mesh', gender: 'Kids', price: 29.99, image: 'https://source.unsplash.com/200x250/?kids,sneakers' },
-  { id: 47, name: 'Kid Sandals', section: 'shoes', sizes: ['2', '3'], color: 'Blue', material: 'Rubber', gender: 'Kids', price: 21.99, image: 'https://source.unsplash.com/200x250/?kids,sandals' },
-  { id: 48, name: 'Kid Boots', section: 'shoes', sizes: ['2', '3'], color: 'Brown', material: 'Leather', gender: 'Kids', price: 34.99, image: 'https://source.unsplash.com/200x250/?kids,boots' },
-  { id: 49, name: 'Kid Loafers', section: 'shoes', sizes: ['1', '2'], color: 'Black', material: 'Canvas', gender: 'Kids', price: 27.99, style: 'Formal', image: 'https://source.unsplash.com/200x250/?kids,loafers' },
-  { id: 50, name: 'Kid Flip Flops', section: 'shoes', sizes: ['2', '3'], color: 'Green', material: 'Rubber', gender: 'Kids', price: 11.99, image: 'https://source.unsplash.com/200x250/?kids,flipflops' }
+  // Kids' Shoes
+  { id: 46, name: 'Kid Sneakers', section: 'shoes', sizes: ['2', '3'], color: 'Red', material: 'Mesh', gender: 'Kids', price: 29.99, image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&h=250&fit=crop&crop=center' },
+  { id: 47, name: 'Kid Sandals', section: 'shoes', sizes: ['2', '3'], color: 'Blue', material: 'Rubber', gender: 'Kids', price: 21.99, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=200&h=250&fit=crop&crop=center' },
+  { id: 48, name: 'Kid Boots', section: 'shoes', sizes: ['2', '3'], color: 'Brown', material: 'Leather', gender: 'Kids', price: 34.99, image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=200&h=250&fit=crop&crop=center' },
+  { id: 49, name: 'Kid Loafers', section: 'shoes', sizes: ['1', '2'], color: 'Black', material: 'Canvas', gender: 'Kids', price: 27.99, style: 'Formal', image: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=200&h=250&fit=crop&crop=center' },
+  { id: 50, name: 'Kid Flip Flops', section: 'shoes', sizes: ['2', '3'], color: 'Green', material: 'Rubber', gender: 'Kids', price: 11.99, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=200&h=250&fit=crop&crop=center' }
 ];
-
-
 const filtersPerSection = {
   tops: {
     size: ['XS', 'S', 'M', 'L', 'XL'],
@@ -112,6 +127,27 @@ function App() {
   const [filters, setFilters] = useState({});
   const [cart, setCart] = useState([]);
 
+  const [saleGenderFilters, setSaleGenderFilters] = useState([]); // for SALE page genders
+  const [saleSectionFilters, setSaleSectionFilters] = useState([]); // for SALE page subsections (e.g., tops, bottoms)
+
+  
+  const toggleSaleGender = (gender) => {
+    setSaleGenderFilters(prev => {
+      const updated = prev.includes(gender) ? prev.filter(g => g !== gender) : [...prev, gender];
+      // Reset subcategory filters if genders change
+      setSaleSectionFilters([]);
+      return updated;
+    });
+  };
+
+  const toggleSaleSection = (section) => {
+    setSaleSectionFilters(prev =>
+      prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
+    );
+  };
+
+
+
   const handleCheckboxChange = (category, value) => {
     const current = filters[category] || [];
     const updated = current.includes(value)
@@ -126,7 +162,8 @@ function App() {
         if (key === 'size') {
           if (!product.sizes?.some(size => values.includes(size))) return false;
         } else if (key === 'price') {
-          const price = product.price;
+          // Use salePrice if available, otherwise price
+          const price = product.salePrice !== undefined ? product.salePrice : product.price;
           const priceMatch = values.some(range => {
             if (range === '$10 and under') return price <= 10;
             if (range === '$10–$20') return price > 10 && price <= 20;
@@ -145,18 +182,72 @@ function App() {
     return true;
   };
 
-  const filteredProducts = productData.filter(
-    (p) => `${p.gender.toLowerCase()}-${p.section}` === activeSection && matchesFilters(p)
-  );
+  const filteredProducts = productData.filter((p) => {
+    if (activeSection === 'sale') {
+      if (!p.salePrice) return false;
+
+      if (saleGenderFilters.length > 0 && !saleGenderFilters.includes(p.gender)) return false;
+
+      if (saleSectionFilters.length > 0 && !saleSectionFilters.includes(p.section)) return false;
+
+      // Also apply the usual filters (size, color, price, etc) on top
+      // Check if product matches ALL filters except gender and section (which are handled separately)
+      for (const [key, values] of Object.entries(filters)) {
+        if (values.length > 0) {
+          if (key === 'size') {
+            if (!p.sizes?.some(size => values.includes(size))) return false;
+          } else if (key === 'price') {
+            const price = p.salePrice !== undefined ? p.salePrice : p.price;
+            const priceMatch = values.some(range => {
+              if (range === '$10 and under') return price <= 10;
+              if (range === '$10–$20') return price > 10 && price <= 20;
+              if (range === '$20–$30') return price > 20 && price <= 30;
+              if (range === '$30–$40') return price > 30 && price <= 40;
+              if (range === '$40–$50') return price > 40 && price <= 50;
+              if (range === '$50 and up') return price > 50;
+              return false;
+            });
+            if (!priceMatch) return false;
+          } else {
+            if (!values.includes(p[key])) return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+
+    // original logic for other sections:
+    if (activeSection.endsWith('-all')) {
+      const gender = activeSection.split('-')[0];
+      return p.gender.toLowerCase() === gender && matchesFilters(p);
+    }
+
+    return `${p.gender.toLowerCase()}-${p.section}` === activeSection && matchesFilters(p);
+  });
+
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>My Clothing Shop</h1>
-        <nav className="Mega-nav">
+      <div className="Top-strip">
+
+        <header className="App-header">
+          <h1>Wardrobe & Co.</h1>
+          <nav className="Mega-nav">
           {Object.entries(navStructure).map(([main, subs]) => (
             <div className="dropdown" key={main}>
-              <span style={main === 'SALE: UP TO 50% OFF' ? { color: 'red', fontWeight: 'bold' } : {}}>
+              <span
+                style={main === 'SALE: UP TO 50% OFF' ? { color: 'red', fontWeight: 'bold' } : {}}
+                onClick={() => {
+                  if (main === 'SALE: UP TO 50% OFF') {
+                    setActiveSection('sale');
+                  } else {
+                    setActiveSection(main.toLowerCase() + '-all');  // Add "-all" for main categories
+                  }
+                  setFilters({});
+                }}
+              >
                 {main}
               </span>
               {subs.length > 0 && (
@@ -165,7 +256,11 @@ function App() {
                     <div
                       key={sub}
                       onClick={() => {
-                        setActiveSection(`${main.toLowerCase()}-${sub}`);
+                        if (main === 'SALE: UP TO 50% OFF') {
+                          setActiveSection('sale');
+                        } else {
+                          setActiveSection(`${main.toLowerCase()}-${sub}`);
+                        }
                         setFilters({});
                       }}
                     >
@@ -176,39 +271,218 @@ function App() {
               )}
             </div>
           ))}
-        </nav>
-      </header>
+
+
+          </nav>
+        </header>
+      </div>
 
       {activeSection && (
         <div className="Main-content">
           <aside className="Filters-vertical">
             <h2>Filters</h2>
-            {Object.entries(filtersPerSection[activeSection.split('-')[1]] || {}).map(([category, values]) => (
-              <div key={category}>
-                <h4>{category.toUpperCase()}</h4>
-                {values.map(value => (
-                  <label key={value}>
-                    <input
-                      type="checkbox"
-                      checked={(filters[category] || []).includes(value)}
-                      onChange={() => handleCheckboxChange(category, value)}
-                    />
-                    {value}
-                  </label>
-                ))}
-              </div>
-            ))}
+            {activeSection === 'sale' ? (
+              <>
+                {/* Gender filters */}
+                <div>
+                  <h4>Gender</h4>
+                  {['Women', 'Men', 'Kids'].map(gender => (
+                    <label key={gender}>
+                      <input
+                        type="checkbox"
+                        checked={saleGenderFilters.includes(gender)}
+                        onChange={() => toggleSaleGender(gender)}
+                      />
+                      {gender}
+                    </label>
+                  ))}
+                </div>
+
+                {/* Subcategory filters */}
+                <div>
+                  <h4>Category</h4>
+                  {(() => {
+                    // Determine which subcategories to show, based on selected genders
+                    let applicableSections = [];
+
+                    if (saleGenderFilters.length > 0) {
+                      const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
+                      applicableSections = Array.from(new Set(filtered.map(p => p.section)));
+                    } else {
+                      applicableSections = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
+                    }
+
+                    return applicableSections.map(section => (
+                      <label key={section}>
+                        <input
+                          type="checkbox"
+                          checked={saleSectionFilters.includes(section)}
+                          onChange={() => toggleSaleSection(section)}
+                        />
+                        {section.charAt(0).toUpperCase() + section.slice(1)}
+                      </label>
+                    ));
+                  })()}
+                </div>
+
+                {/* Now the usual filters combined for selected subsections */}
+
+                {(() => {
+                  // Combine all the applicable filters (size, color, price, style, etc) from selected subcategories
+                  // If no subsections selected, combine all sale subsections for selected genders (or all if none selected)
+                  
+                  let subsectionsToUse = [];
+
+                  if (saleSectionFilters.length > 0) {
+                    subsectionsToUse = saleSectionFilters;
+                  } else if (saleGenderFilters.length > 0) {
+                    // All subsections from selected genders
+                    const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
+                    subsectionsToUse = Array.from(new Set(filtered.map(p => p.section)));
+                  } else {
+                    subsectionsToUse = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
+                  }
+
+                  // Combine filters from these subsections
+                  const combinedFilters = {};
+                  subsectionsToUse.forEach(section => {
+                    const sectionFilters = filtersPerSection[section];
+                    if (sectionFilters) {
+                      Object.entries(sectionFilters).forEach(([cat, vals]) => {
+                        if (!combinedFilters[cat]) combinedFilters[cat] = new Set();
+                        vals.forEach(v => combinedFilters[cat].add(v));
+                      });
+                    }
+                  });
+
+                  const combinedFiltersArr = Object.entries(combinedFilters).map(
+                    ([cat, valSet]) => [cat, Array.from(valSet)]
+                  );
+
+                  return combinedFiltersArr.map(([category, values]) => (
+                    <div key={category}>
+                      <h4>{category.toUpperCase()}</h4>
+                      {values.map(value => (
+                        <label key={value}>
+                          <input
+                            type="checkbox"
+                            checked={(filters[category] || []).includes(value)}
+                            onChange={() => handleCheckboxChange(category, value)}
+                          />
+                          {value}
+                        </label>
+                      ))}
+                    </div>
+                  ));
+                })()}
+              </>
+            ) : (
+              // Your existing filters for non-sale pages (keep unchanged)
+              (() => {
+                const keyPart = activeSection.split('-')[1];
+                if (activeSection.endsWith('-all')) {
+                  const gender = activeSection.split('-')[0].toUpperCase();
+                  const subsections = navStructure[gender] || [];
+
+                  const combinedFilters = {};
+                  subsections.forEach(section => {
+                    const sectionFilters = filtersPerSection[section];
+                    if (sectionFilters) {
+                      Object.entries(sectionFilters).forEach(([cat, vals]) => {
+                        if (!combinedFilters[cat]) {
+                          combinedFilters[cat] = new Set();
+                        }
+                        vals.forEach(v => combinedFilters[cat].add(v));
+                      });
+                    }
+                  });
+
+                  const combinedFiltersArr = Object.entries(combinedFilters).map(
+                    ([cat, valSet]) => [cat, Array.from(valSet)]
+                  );
+
+                  return combinedFiltersArr.map(([category, values]) => (
+                    <div key={category}>
+                      <h4>{category.toUpperCase()}</h4>
+                      {values.map(value => (
+                        <label key={value}>
+                          <input
+                            type="checkbox"
+                            checked={(filters[category] || []).includes(value)}
+                            onChange={() => handleCheckboxChange(category, value)}
+                          />
+                          {value}
+                        </label>
+                      ))}
+                    </div>
+                  ));
+                } else {
+                  return Object.entries(filtersPerSection[keyPart] || {}).map(([category, values]) => (
+                    <div key={category}>
+                      <h4>{category.toUpperCase()}</h4>
+                      {values.map(value => (
+                        <label key={value}>
+                          <input
+                            type="checkbox"
+                            checked={(filters[category] || []).includes(value)}
+                            onChange={() => handleCheckboxChange(category, value)}
+                          />
+                          {value}
+                        </label>
+                      ))}
+                    </div>
+                  ));
+                }
+              })()
+            )}
+
+
+
           </aside>
 
           <section className="Product-list">
-            {filteredProducts.map(p => (
-              <div key={p.id} className="Product-card">
-                <img src={p.image || 'https://via.placeholder.com/200x250?text=No+Image'} alt={p.name} className="Product-img" />
-                <h3>{p.name}</h3>
-                <p className="Product-price">${p.price}</p>
-                <button onClick={() => setCart([...cart, p])}>Add to Cart</button>
-              </div>
-            ))}
+            {filteredProducts.map(p => {
+              const discountPercent = p.salePrice 
+                ? Math.round(((p.price - p.salePrice) / p.price) * 100)
+                : 0;
+
+              return (
+                <div key={p.id} className="Product-card">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="Product-img"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/200x250?text=No+Image';
+                    }}
+                  />
+
+                  <h3>{p.name}</h3>
+                  <p className="Product-price">
+                    {p.salePrice ? (
+                      <>
+                        <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                          ${p.price.toFixed(2)}
+                        </span>{' '}
+                        <span style={{ color: 'red' }}>${p.salePrice.toFixed(2)}</span>
+                      </>
+                    ) : (
+                      <>${p.price.toFixed(2)}</>
+                    )}
+                  </p>
+
+                  {p.salePrice && (
+                    <p style={{ color: 'black', fontWeight: 'bold', marginTop: '-8px', marginBottom: '8px' }}>
+                      {discountPercent}% OFF
+                    </p>
+                  )}
+
+                  <button onClick={() => setCart([...cart, p])}>Add to Cart</button>
+                </div>
+              );
+            })}
+
             {filteredProducts.length === 0 && <p>No items match selected filters.</p>}
           </section>
 

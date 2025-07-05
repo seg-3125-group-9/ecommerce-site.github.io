@@ -2,20 +2,67 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Quicksand:wght@400;600&display=swap');
 
-body, .App {
+/* Set page background color */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8; /* light bluish-grey */
+  min-height: 100vh;
   font-family: 'Quicksand', sans-serif;
+}
+
+body {
+  background-color: #f0f4f8; /* light bluish grey */
+  margin: 0;
+}
+
+/* White background strip for header section */
+.Top-strip {
+  background-color: white;
+  width: 100vw; /* full viewport width */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 20px 0; /* optional padding */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* optional subtle shadow */
+}
+
+.App-header {
   max-width: 1200px;
   margin: auto;
-  padding: 20px;
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0;  
+  background: transparent; /* keep transparent so background shows from Top-strip */
+}
+
+.App-header h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 4rem; /* or any size you want, e.g., 48px, 60px */
+  margin-bottom: 10px; /* optional spacing below the title */
+}
+
+.Site-title {
+  margin-top: 0;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.Mega-nav span {
+  text-decoration: none;
+}
+
+.App {
+  max-width: 1200px;
+  margin: auto;
 }
 
 h1, h2, h3, h4 {
   font-family: 'Playfair Display', serif;
   letter-spacing: 0.5px;
-}
-
-.App-header {
-  text-align: center;
 }
 
 .Mega-nav {
@@ -87,10 +134,13 @@ h1, h2, h3, h4 {
   flex: 1;
 }
 
+/* White background and subtle shadow for cards */
 .Product-card {
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 6px;
+  background-color: white; /* keeps card white */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .Product-card h3 {
@@ -101,7 +151,6 @@ h1, h2, h3, h4 {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 4px;
 }
 
 .Product-price {
