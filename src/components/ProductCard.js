@@ -33,14 +33,12 @@ const ProductCard = ({
       border: '1px solid #ddd',
       borderRadius: '8px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+      transition: 'box-shadow 0.3s ease'
     }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-5px)';
         e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
       }}>
 
@@ -186,7 +184,7 @@ const ProductCard = ({
                     justifyContent: 'center',
                     minWidth: '40px',
                     margin: '0'
-                    
+
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = 'var(--accent-color)';

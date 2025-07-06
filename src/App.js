@@ -348,7 +348,7 @@ function App() {
   const getFeaturedProducts = () => {
     return productData.filter(product =>
       ['Bestseller', 'Popular', 'New', 'Trending'].includes(product.trend)
-    ).slice(0, 8);
+    ).slice(0, 4); // Changed from 8 to 4
   };
 
   const matchesFilters = (product) => {

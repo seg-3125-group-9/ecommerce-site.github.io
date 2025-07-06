@@ -12,7 +12,7 @@ const ProductList = ({
     <Container fluid>
       <Row className="g-4">
         {products.map(product => (
-          <Col key={product.id} xs={12} sm={6} lg={4} xl={3} className="mb-4">
+          <Col key={product.id} xs={12} sm={6} lg={4} xl={4} className="mb-4">
             <ProductCard
               product={product}
               onAddToCart={onAddToCart}
