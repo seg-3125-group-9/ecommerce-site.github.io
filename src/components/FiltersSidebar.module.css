@@ -1,0 +1,95 @@
+/* Filters sidebar */
+.filtersVertical {
+  min-width: 200px;
+  border-right: 1px solid var(--light-gray);
+  padding-right: var(--spacing-lg);
+  background-color: var(--white);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-light);
+  height: fit-content;
+}
+
+.filtersVertical h4 {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1em;
+  border-bottom: 1px solid var(--bg-color);
+  padding-bottom: var(--spacing-xs);
+}
+
+.filtersVertical label {
+  display: block;
+  margin-left: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-color);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.filtersVertical label:hover {
+  background-color: var(--bg-color);
+}
+
+/* Checkbox styling */
+.filtersVertical input[type="checkbox"] {
+  margin-right: var(--spacing-xs);
+  accent-color: var(--accent-color);
+}
+
+/* Sale filters section */
+.saleFilters {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 82, 0.1));
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(230, 57, 70, 0.2);
+}
+
+.saleFilters h4 {
+  color: var(--sale-highlight);
+  margin-top: 0;
+}
+
+/* Filter groups */
+.filterGroup {
+  margin-bottom: var(--spacing-lg);
+}
+
+.filterGroup:last-child {
+  margin-bottom: 0;
+}
+
+/* Reset filters button */
+.resetFilters {
+  width: 100%;
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: transparent;
+  border: 1px solid var(--medium-gray);
+  color: var(--text-color);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.resetFilters:hover {
+  background-color: var(--bg-color);
+  border-color: var(--accent-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .filtersVertical {
+    min-width: auto;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--light-gray);
+    padding-right: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+}

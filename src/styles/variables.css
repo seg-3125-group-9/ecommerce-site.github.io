@@ -1,0 +1,47 @@
+/* CSS Variables - LIGHT THEME PRESERVED */
+:root {
+  /* Brand Colors */
+  --primary-color: #222;
+  --accent-color: #e63946;
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --sale-highlight: red;
+  
+  /* UI Colors - LIGHT THEME */
+  --white: #ffffff;
+  --light-gray: #e0e0e0;
+  --medium-gray: #cccccc;
+  --dark-gray: #666666;
+  
+  /* Background Colors - ENSURE LIGHT */
+  --body-bg: #f0f4f8; /* Light bluish grey */
+  --card-bg: #ffffff;  /* White cards */
+  --section-bg: #ffffff; /* White sections */
+  
+  /* Typography */
+  --font-primary: 'Playfair Display', serif;
+  --font-secondary: 'Quicksand', sans-serif;
+  
+  /* Spacing scale */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+  --spacing-xxl: 40px;
+  
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 20px;
+  
+  /* Shadows */
+  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition-fast: 0.3s ease;
+  --transition-medium: 0.5s ease;
+}

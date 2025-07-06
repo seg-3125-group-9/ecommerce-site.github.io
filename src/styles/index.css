@@ -1,0 +1,8 @@
+/* Import Bootstrap CSS first */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Import our custom styles in order of specificity */
+@import './variables.css';
+@import './globals.css';
+@import './utilities.css';
+@import './bootstrap-overrides.css';

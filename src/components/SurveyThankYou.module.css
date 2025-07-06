@@ -1,0 +1,293 @@
+/* Survey thank you container */
+.surveyThankYou {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-lg);
+  text-align: center;
+}
+
+.thankYouContent {
+  background-color: var(--white);
+  padding: 50px var(--spacing-xxl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-heavy);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background decoration */
+.thankYouContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}
+
+/* Thank you icon */
+.thankYouIcon {
+  font-size: 4em;
+  margin-bottom: var(--spacing-lg);
+  color: var(--accent-color);
+  animation: bounce 2s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.thankYouContent h2 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
+  font-size: 2.2em;
+}
+
+.thankYouMessage {
+  color: var(--text-color);
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Email confirmation section */
+.emailConfirmation {
+  background: linear-gradient(135deg, rgba(230, 57, 70, 0.1), rgba(255, 71, 87, 0.1));
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-xl);
+  border-left: 4px solid var(--accent-color);
+}
+
+.emailConfirmation p {
+  margin: 0;
+  color: var(--text-color);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.emailIcon {
+  font-size: 1.2em;
+  color: var(--accent-color);
+}
+
+/* Next steps section */
+.nextStepsBox {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  margin: var(--spacing-xl) 0;
+  text-align: left;
+  border: 1px solid rgba(230, 57, 70, 0.1);
+}
+
+.nextStepsBox h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.nextStepsBox ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nextStepsBox li {
+  padding: var(--spacing-sm) 0;
+  color: var(--text-color);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.stepIcon {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 0.8em;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Social connect section */
+.socialConnect {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 2px solid var(--bg-color);
+}
+
+.socialConnect h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.2em;
+}
+
+.socialConnect p {
+  color: var(--text-color);
+  margin-bottom: var(--spacing-md);
+  opacity: 0.8;
+}
+
+.socialIcons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.socialIcon {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 1.1em;
+  border: 2px solid transparent;
+}
+
+.socialIcon:hover {
+  background-color: var(--accent-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+/* Action button */
+.continueShoppingBtn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xxl);
+  border-radius: var(--border-radius-md);
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.continueShoppingBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.continueShoppingBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.continueShoppingBtn:hover::before {
+  left: 100%;
+}
+
+/* Survey data display */
+.surveyDataSummary {
+  background-color: var(--bg-color);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  margin: var(--spacing-xl) 0;
+  text-align: left;
+}
+
+.surveyDataSummary h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.surveyDataSummary p {
+  margin: var(--spacing-xs) 0;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+}
+
+.surveyDataSummary strong {
+  color: var(--primary-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .surveyThankYou {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .thankYouContent {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .thankYouContent h2 {
+    font-size: 1.8em;
+  }
+
+  .thankYouIcon {
+    font-size: 3em;
+  }
+
+  .emailConfirmation {
+    padding: var(--spacing-md);
+  }
+
+  .nextStepsBox {
+    padding: var(--spacing-lg);
+  }
+
+  .socialIcons {
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  .socialIcon {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 1em;
+  }
+
+  .continueShoppingBtn {
+    width: 100%;
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 576px) {
+  .thankYouMessage {
+    font-size: 1em;
+  }
+
+  .nextStepsBox li {
+    font-size: 0.9em;
+  }
+
+  .emailConfirmation p {
+    font-size: 0.9em;
+  }
+}

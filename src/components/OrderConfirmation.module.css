@@ -1,0 +1,108 @@
+/* Order confirmation container */
+.orderConfirmation {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-lg);
+  text-align: center;
+}
+
+.confirmationContent {
+  background-color: var(--white);
+  padding: var(--spacing-xxl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-heavy);
+}
+
+.successIcon {
+  font-size: 4em;
+  margin-bottom: var(--spacing-lg);
+}
+
+.confirmationContent h2 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.confirmationMessage {
+  color: var(--text-color);
+  font-size: 1.1em;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Order details section */
+.orderDetails {
+  text-align: left;
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius-md);
+}
+
+.orderDetails h3 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.orderInfo p {
+  margin: var(--spacing-xs) 0;
+  color: var(--text-color);
+}
+
+.orderInfo address {
+  font-style: normal;
+  margin-top: var(--spacing-sm);
+  line-height: 1.4;
+}
+
+/* Next steps section */
+.nextSteps {
+  margin-top: var(--spacing-lg);
+}
+
+.nextSteps h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.nextSteps ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nextSteps li {
+  margin: var(--spacing-xs) 0;
+  color: var(--text-color);
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin: var(--spacing-xl) 0;
+}
+
+/* Thank you message */
+.thankYouMessage {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--bg-color);
+}
+
+.thankYouMessage p {
+  color: var(--text-color);
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .actionButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actionButtons button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
