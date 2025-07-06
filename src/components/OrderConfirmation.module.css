@@ -1,46 +1,63 @@
-/* Order confirmation container */
+/* Order Confirmation component styles */
 .orderConfirmation {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-xxl) var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  /* Reduced horizontal padding */
   text-align: center;
 }
 
 .confirmationContent {
   background-color: var(--white);
-  padding: var(--spacing-xxl);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  /* More balanced padding */
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-heavy);
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  /* Ensure centering */
 }
 
 .successIcon {
   font-size: 4em;
   margin-bottom: var(--spacing-lg);
+  color: var(--accent-color);
+  display: flex;
+  justify-content: center;
 }
 
-.confirmationContent h2 {
+.successIcon svg {
+  width: 1em;
+  height: 1em;
+}
+
+.confirmationTitle {
   color: var(--primary-color);
   margin-bottom: var(--spacing-md);
+  font-size: 2.2em;
 }
 
 .confirmationMessage {
   color: var(--text-color);
   font-size: 1.1em;
   margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
 }
 
-/* Order details section */
 .orderDetails {
-  text-align: left;
+  text-align: center;
   margin: var(--spacing-xl) 0;
   padding: var(--spacing-lg);
   background-color: var(--bg-color);
   border-radius: var(--border-radius-md);
+  width: 100%;
 }
 
-.orderDetails h3 {
+.orderDetailsTitle {
   color: var(--primary-color);
   margin-bottom: var(--spacing-md);
+  font-size: 1.4em;
 }
 
 .orderInfo p {
@@ -48,61 +65,94 @@
   color: var(--text-color);
 }
 
-.orderInfo address {
+.orderAddress {
   font-style: normal;
   margin-top: var(--spacing-sm);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-/* Next steps section */
 .nextSteps {
   margin-top: var(--spacing-lg);
 }
 
-.nextSteps h4 {
+.nextStepsTitle {
   color: var(--primary-color);
   margin-bottom: var(--spacing-sm);
+  font-size: 1.2em;
 }
 
-.nextSteps ul {
+.nextStepsList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.nextSteps li {
-  margin: var(--spacing-xs) 0;
+.nextStepsItem {
+  margin: var(--spacing-sm) 0;
   color: var(--text-color);
+  display: flex;
+  align-items: center;
 }
 
-/* Action buttons */
+.nextStepsItem svg {
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
 .actionButtons {
   display: flex;
   gap: var(--spacing-md);
   justify-content: center;
   margin: var(--spacing-xl) 0;
+  flex-wrap: wrap;
 }
 
-/* Thank you message */
 .thankYouMessage {
   margin-top: var(--spacing-xl);
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--bg-color);
+  border-top: 1px solid var(--light-gray);
 }
 
-.thankYouMessage p {
+.thankYouText {
   color: var(--text-color);
   font-style: italic;
+  margin: 0;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .orderConfirmation {
+    padding: var(--spacing-md) var(--spacing-xs);
+    /* Minimal padding on mobile */
+  }
+
+  .confirmationContent {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .confirmationTitle {
+    font-size: 1.8em;
+  }
+
   .actionButtons {
     flex-direction: column;
     align-items: center;
   }
 
-  .actionButtons button {
+  .actionButtons>* {
     width: 100%;
     max-width: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .orderConfirmation {
+    padding: var(--spacing-xl) var(--spacing-md);
+    /* Better desktop spacing */
+  }
+
+  .confirmationContent {
+    padding: var(--spacing-xxl) var(--spacing-xl);
+    /* More generous desktop padding */
   }
 }

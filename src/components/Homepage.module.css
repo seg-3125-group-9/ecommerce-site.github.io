@@ -3,7 +3,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-lg);
-  background-color: transparent; /* Keep transparent for light background */
+  background-color: transparent;
+  /* Keep transparent for light background */
 }
 
 /* Hero section */
@@ -72,11 +73,13 @@
 .categoryCard {
   background-color: var(--white);
   padding: var(--spacing-xl) var(--spacing-lg);
-  border-radius: 16px; /* More rounded */
+  border-radius: 16px;
+  /* More rounded */
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* Softer shadow */
   border: none;
   position: relative;
   overflow: hidden;
@@ -100,7 +103,25 @@
 
 .categoryIcon {
   font-size: 3em;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 15px;
+  color: var(--accent-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Better alignment for mixed content */
+  min-height: 1.2em;
+  /* Consistent height for emoji and SVG */
+}
+
+.categoryIcon svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* Special styling for emoji icons */
+.saleCategory .categoryIcon {
+  color: inherit;
+  /* Let emoji use its natural color */
 }
 
 .categoryCard h4 {
@@ -144,7 +165,8 @@
 
 .featuredProductCard {
   background-color: var(--white);
-  border-radius: 16px; /* Matching the product cards */
+  border-radius: 16px;
+  /* Matching the product cards */
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
@@ -208,7 +230,15 @@
 
 .benefitIcon {
   font-size: 2.5em;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 15px;
+  color: var(--accent-color);
+  display: flex;
+  justify-content: center;
+}
+
+.benefitIcon svg {
+  width: 1em;
+  height: 1em;
 }
 
 .benefitItem h4 {

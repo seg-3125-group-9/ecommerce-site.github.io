@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { HiOutlineShoppingBag } from 'react-icons/hi';
 import MegaMenu from './MegaMenu';
 import styles from './Header.module.css';
 
@@ -27,11 +28,12 @@ const Header = ({
 
                     <div className={styles.cartIconContainer}>
                         <Button
-                            variant="danger"
+                            variant="primary"
                             className={styles.cartButton}
                             onClick={onViewCart}
                         >
-                            🛒 Cart ({cartCount})
+                            <HiOutlineShoppingBag className="me-2" />
+                            Cart ({cartCount})
                         </Button>
                     </div>
                 </div>

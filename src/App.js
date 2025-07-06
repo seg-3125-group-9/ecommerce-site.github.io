@@ -167,9 +167,11 @@ function App() {
   };
 
   const handleFiltersReset = () => {
+    // Clear all filter states but stay on current section
     setFilters({});
     setSaleGenderFilters([]);
     setSaleSectionFilters([]);
+    // Do NOT change currentView or activeSection
   };
 
   const toggleSaleGender = (gender) => {
@@ -421,6 +423,7 @@ function App() {
                     onSaleGenderToggle={toggleSaleGender}
                     onSaleSectionToggle={toggleSaleSection}
                     productData={productData}
+                    onFiltersReset={handleFiltersReset}
                   />
                 </div>
                 <div className="col-lg-9 col-md-8">

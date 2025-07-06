@@ -1,5 +1,19 @@
 import React from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import {
+  HiOutlineSparkles,
+  HiOutlineTruck,
+  HiOutlineShieldCheck,
+  HiOutlineHeart,
+  HiOutlineRefresh,
+  HiOutlineChatAlt
+} from 'react-icons/hi';
+import {
+  IoShirtOutline,
+  IoWomanOutline,
+  IoManOutline,
+  IoSchoolOutline
+} from 'react-icons/io5';
 import styles from './Homepage.module.css';
 
 const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
@@ -7,48 +21,48 @@ const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
     {
       id: 'sale',
       title: 'SALE: UP TO 50% OFF',
-      icon: '🔥',
+      icon: '🔥', // Changed from <HiOutlineFire /> to actual fire emoji
       description: 'Limited time offers!',
       isSale: true
     },
     {
       id: 'women-all',
       title: 'WOMEN',
-      icon: '👗',
+      icon: <IoWomanOutline />,
       description: 'Elegant & trendy styles'
     },
     {
       id: 'men-all',
       title: 'MEN',
-      icon: '👔',
+      icon: <IoManOutline />,
       description: 'Modern & classic looks'
     },
     {
       id: 'kids-all',
       title: 'KIDS',
-      icon: '🧸',
+      icon: <IoSchoolOutline />,
       description: 'Fun & comfortable wear'
     }
   ];
 
   const benefits = [
     {
-      icon: '🚚',
+      icon: <HiOutlineTruck />,
       title: 'Free Shipping',
       description: 'On orders over $75'
     },
     {
-      icon: '↩️',
+      icon: <HiOutlineRefresh />,
       title: 'Easy Returns',
       description: '30-day return policy'
     },
     {
-      icon: '💎',
+      icon: <HiOutlineShieldCheck />,
       title: 'Quality Guarantee',
       description: 'Premium materials only'
     },
     {
-      icon: '🎯',
+      icon: <HiOutlineChatAlt />,
       title: 'Perfect Fit',
       description: 'Size guide & expert help'
     }
@@ -62,20 +76,20 @@ const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
           <div className={styles.heroContent}>
             <h2>Discover Your Perfect Style</h2>
             <p className={styles.heroSubtitle}>
-              Welcome to Wardrobe & Co.! We've curated the perfect collection just for you. 
+              Welcome to Wardrobe & Co.! We've curated the perfect collection just for you.
               From timeless classics to the latest trends, find pieces that make you feel confident and stylish.
             </p>
             <div className={styles.heroActions}>
-              <Button 
-                variant="light" 
+              <Button
+                variant="light"
                 size="lg"
                 className={styles.heroBtn}
                 onClick={() => onSectionChange('sale')}
               >
                 Shop Sale - Up to 50% Off! 🔥
               </Button>
-              <Button 
-                variant="outline-light" 
+              <Button
+                variant="outline-light"
                 size="lg"
                 className={styles.heroBtn}
                 onClick={() => onSectionChange('all')}
@@ -94,7 +108,7 @@ const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
           <Row className="g-4">
             {categories.map((category) => (
               <Col key={category.id} xs={6} md={4} lg={3}>
-                <Card 
+                <Card
                   className={`${styles.categoryCard} ${category.isSale ? styles.saleCategory : ''} h-100`}
                   onClick={() => onSectionChange(category.id)}
                 >
@@ -121,9 +135,9 @@ const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
             {featuredProducts.map((product) => (
               <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
                 <Card className={`${styles.featuredProductCard} h-100`}>
-                  <Card.Img 
-                    variant="top" 
-                    src={product.image} 
+                  <Card.Img
+                    variant="top"
+                    src={product.image}
                     alt={product.name}
                     className={styles.featuredProductImage}
                   />
@@ -148,7 +162,7 @@ const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
                         </span>
                       )}
                     </div>
-                    <Button 
+                    <Button
                       variant="primary"
                       className={`${styles.featuredAddBtn} mt-3`}
                       onClick={() => onAddToCart(product)}

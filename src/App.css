@@ -19,7 +19,8 @@ body,
 html {
   margin: 0;
   padding: 0;
-  background-color: #f0f4f8; /* Keep the light bluish grey background */
+  background-color: #f0f4f8;
+  /* Keep the light bluish grey background */
   min-height: 100vh;
   font-family: 'Quicksand', sans-serif;
   color: var(--text-color);
@@ -80,7 +81,8 @@ body {
 .App {
   max-width: 1200px;
   margin: auto;
-  background-color: transparent; /* Let the body background show through */
+  background-color: transparent;
+  /* Let the body background show through */
 }
 
 h1,
@@ -179,7 +181,8 @@ h4 {
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 6px;
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
+  /* Ensure cards are white */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -523,7 +526,8 @@ button:hover {
 
 /* Order Confirmation Styles */
 .order-confirmation {
-  max-width: 600px;
+  max-width: 900px;
+  /* Increased from 600px for better utilization */
   margin: 0 auto;
   padding: 40px 20px;
   text-align: center;
@@ -534,6 +538,8 @@ button:hover {
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* Ensure full width utilization */
 }
 
 .success-icon {
@@ -558,6 +564,8 @@ button:hover {
   padding: 20px;
   background-color: var(--bg-color);
   border-radius: 8px;
+  max-width: 100%;
+  /* Remove width constraints */
 }
 
 .order-details h3 {
@@ -1054,6 +1062,11 @@ button:hover {
   background-color: white;
   padding: 10px 0;
   border-bottom: 1px solid var(--bg-color);
+  margin-bottom: 20px;
+  /* Add spacing below breadcrumb */
+  border-bottom-left-radius: 8px;
+  /* Add rounded bottom corners */
+  border-bottom-right-radius: 8px;
 }
 
 .breadcrumb-container {
@@ -1104,7 +1117,8 @@ button:hover {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: transparent; /* Let the light background show through */
+  background-color: transparent;
+  /* Let the light background show through */
 }
 
 .hero-section {
@@ -1169,7 +1183,8 @@ button:hover {
 }
 
 .category-card {
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
+  /* Ensure cards are white */
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;
@@ -1238,7 +1253,8 @@ button:hover {
 }
 
 .featured-product-card {
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
+  /* Ensure cards are white */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1275,7 +1291,8 @@ button:hover {
 }
 
 .why-choose-us {
-  background-color: white; /* Ensure section is white */
+  background-color: white;
+  /* Ensure section is white */
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1461,5 +1478,21 @@ button:hover {
   .cart-icon-container {
     position: static;
     transform: none;
+  }
+
+  .order-confirmation {
+    max-width: 100%;
+    padding: 20px 15px;
+  }
+
+  .confirmation-content {
+    padding: 30px 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .order-confirmation {
+    max-width: 1000px;
+    /* Allow more width on large screens */
   }
 }

@@ -1,5 +1,11 @@
 import React from 'react';
 import { Container, Button, Card } from 'react-bootstrap';
+import {
+  HiOutlineHeart,
+  HiOutlineMail,
+  HiOutlineUserGroup,
+  HiOutlineSparkles
+} from 'react-icons/hi';
 import styles from './SurveyThankYou.module.css';
 
 const SurveyThankYou = ({ surveyData, onContinueShopping }) => {
@@ -8,11 +14,13 @@ const SurveyThankYou = ({ surveyData, onContinueShopping }) => {
       <Container>
         <Card className={styles.thankYouContent}>
           <Card.Body>
-            <div className={styles.thankYouIcon}>🎉</div>
+            <div className={styles.thankYouIcon}>
+              <HiOutlineHeart />
+            </div>
             <h2>Thank you for your feedback!</h2>
-            
+
             <p className={styles.thankYouMessage}>
-              We truly appreciate you taking the time to share your thoughts with us. 
+              We truly appreciate you taking the time to share your thoughts with us.
               Your feedback helps us create an even better shopping experience for you and all our customers!
             </p>
 
@@ -41,26 +49,20 @@ const SurveyThankYou = ({ surveyData, onContinueShopping }) => {
             )}
 
             <div className={styles.nextStepsBox}>
-              <h4>What happens next?</h4>
+              <h4>What's Next?</h4>
               <ul>
                 <li>
-                  <div className={styles.stepIcon}>1</div>
-                  We'll review your feedback with our team
+                  <HiOutlineSparkles className="me-2" />
+                  We'll use your feedback to improve our products and services
                 </li>
                 <li>
-                  <div className={styles.stepIcon}>2</div>
-                  Your suggestions help shape future improvements
+                  <HiOutlineMail className="me-2" />
+                  You'll receive exclusive offers and updates based on your preferences
                 </li>
                 <li>
-                  <div className={styles.stepIcon}>3</div>
-                  Keep an eye out for new features and products
+                  <HiOutlineUserGroup className="me-2" />
+                  Join our community of fashion enthusiasts
                 </li>
-                {surveyData?.newsletter && (
-                  <li>
-                    <div className={styles.stepIcon}>4</div>
-                    You'll receive our newsletter with exclusive updates
-                  </li>
-                )}
               </ul>
             </div>
 

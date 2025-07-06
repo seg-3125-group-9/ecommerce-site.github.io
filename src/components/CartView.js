@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { HiOutlineShoppingBag, HiOutlineTrash } from 'react-icons/hi';
 import BackButton from './BackButton';
 import styles from './CartView.module.css';
 
@@ -32,8 +33,8 @@ const CartView = ({ cart, onRemoveFromCart, onProceedToCheckout, onContinueShopp
                 <div className={styles.emptyCartIcon}>🛒</div>
                 <h3>Your cart is empty</h3>
                 <p>Looks like you haven't added anything to your cart yet. Let's find you some amazing pieces!</p>
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   size="lg"
                   onClick={onContinueShopping}
                 >
@@ -51,8 +52,8 @@ const CartView = ({ cart, onRemoveFromCart, onProceedToCheckout, onContinueShopp
                     <div className={styles.cartItemContent}>
                       <Row className="align-items-start">
                         <Col xs={4} md={3}>
-                          <img 
-                            src={item.image} 
+                          <img
+                            src={item.image}
                             alt={item.name}
                             className={styles.cartItemImage}
                           />
@@ -70,7 +71,7 @@ const CartView = ({ cart, onRemoveFromCart, onProceedToCheckout, onContinueShopp
                                 </div>
                               )}
                             </div>
-                            
+
                             <div className={styles.itemPricing}>
                               <div className={styles.priceRow}>
                                 {item.salePrice ? (
@@ -98,10 +99,12 @@ const CartView = ({ cart, onRemoveFromCart, onProceedToCheckout, onContinueShopp
                           <div className={styles.itemActions}>
                             <Button
                               variant="outline-danger"
-                              className={styles.removeBtn}
+                              size="sm"
                               onClick={() => onRemoveFromCart(index)}
+                              className={styles.removeBtn}
                             >
-                              <span>🗑️</span> Remove
+                              <HiOutlineTrash className="me-1" />
+                              Remove
                             </Button>
                           </div>
                         </Col>
@@ -134,8 +137,8 @@ const CartView = ({ cart, onRemoveFromCart, onProceedToCheckout, onContinueShopp
                     </div>
                   </div>
 
-                  <Button 
-                    variant="primary" 
+                  <Button
+                    variant="primary"
                     size="lg"
                     className={styles.checkoutBtn}
                     onClick={onProceedToCheckout}
