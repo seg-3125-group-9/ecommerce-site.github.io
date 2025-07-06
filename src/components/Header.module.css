@@ -9,18 +9,22 @@
 /* Site logo/title styling */
 .siteLogo {
   cursor: pointer;
-  transition: color var(--transition-fast);
+  transition: all 0.3s ease;
   user-select: none;
 }
 
 .siteLogo:hover {
-  color: var(--accent-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform: scale(1.02);
 }
 
 /* Cart button container */
 .cartIconContainer {
   position: absolute;
-  right: 0;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -28,17 +32,25 @@
 .cartButton {
   background-color: var(--accent-color);
   color: var(--white);
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--accent-color);
+  padding: 10px 18px;
+  border-radius: 6px;
   cursor: pointer;
   font-family: var(--font-secondary);
   font-weight: 600;
-  transition: background-color var(--transition-fast);
+  font-size: 0.95em;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .cartButton:hover {
   background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive header adjustments */
@@ -51,5 +63,6 @@
   .cartIconContainer {
     position: static;
     transform: none;
+    right: auto;
   }
 }

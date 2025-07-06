@@ -9,42 +9,61 @@ const MegaMenu = ({ onSectionChange, onFiltersReset }) => {
     KIDS: ['tops', 'bottoms', 'shoes']
   };
 
-  const handleSectionClick = (section) => {
+  const handleCategoryClick = (category) => {
+    // Only allow direct clicking for SALE
+    if (category === 'SALE: UP TO 50% OFF') {
+      onFiltersReset();
+      onSectionChange('sale');
+    }
+    // For WOMEN, MEN, KIDS - do nothing (disabled)
+  };
+
+  const handleSubcategoryClick = (gender, subcategory) => {
     onFiltersReset();
-    onSectionChange(section);
+    const genderKey = gender === 'WOMEN' ? 'women' :
+      gender === 'MEN' ? 'men' :
+        gender === 'KIDS' ? 'kids' : gender.toLowerCase();
+
+    if (subcategory === 'all') {
+      onSectionChange(`${genderKey}-all`);
+    } else {
+      onSectionChange(`${genderKey}-${subcategory}`);
+    }
   };
 
   return (
     <nav className={styles.megaNav} role="navigation" aria-label="Product categories">
-      {Object.entries(navStructure).map(([mainCategory, subCategories]) => (
-        <div key={mainCategory} className={styles.dropdown}>
-          <span 
-            data-sale={mainCategory.includes('SALE')}
-            role="button"
-            tabIndex={0}
-            onClick={() => handleSectionClick(mainCategory === 'SALE: UP TO 50% OFF' ? 'sale' : 'all')}
-            onKeyDown={(e) => e.key === 'Enter' && handleSectionClick(mainCategory === 'SALE: UP TO 50% OFF' ? 'sale' : 'all')}
+      {Object.entries(navStructure).map(([category, subcategories]) => (
+        <div key={category} className={styles.dropdown}>
+          <span
+            onClick={() => handleCategoryClick(category)}
+            data-sale={category.includes('SALE')}
+            style={{
+              cursor: category === 'SALE: UP TO 50% OFF' ? 'pointer' : 'default',
+              opacity: category === 'SALE: UP TO 50% OFF' ? 1 : 0.8
+            }}
           >
-            {mainCategory}
+            {category}
           </span>
-          
-          {subCategories.length > 0 && (
+          {subcategories.length > 0 && (
             <div className={styles.dropdownContent} role="menu">
-              <div 
-                onClick={() => handleSectionClick(`${mainCategory.toLowerCase()}-all`)}
-                role="menuitem"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && handleSectionClick(`${mainCategory.toLowerCase()}-all`)}
+              <div
+                onClick={() => handleSubcategoryClick(category, 'all')}
+                style={{
+                  fontWeight: 'bold',
+                  borderBottom: '1px solid #eee',
+                  marginBottom: '5px',
+                  paddingBottom: '5px',
+                  cursor: 'pointer'
+                }}
               >
-                All {mainCategory}
+                All {category}
               </div>
-              {subCategories.map((sub) => (
-                <div 
+              {subcategories.map((sub) => (
+                <div
                   key={sub}
-                  onClick={() => handleSectionClick(`${mainCategory.toLowerCase()}-${sub}`)}
-                  role="menuitem"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSectionClick(`${mainCategory.toLowerCase()}-${sub}`)}
+                  onClick={() => handleSubcategoryClick(category, sub)}
+                  style={{ cursor: 'pointer' }}
                 >
                   {sub.charAt(0).toUpperCase() + sub.slice(1)}
                 </div>

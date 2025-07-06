@@ -141,7 +141,7 @@ function App() {
   const [saleSectionFilters, setSaleSectionFilters] = useState([]);
 
   // Shopping flow state
-  const [currentView, setCurrentView] = useState('home'); // Changed from 'products' to 'home'
+  const [currentView, setCurrentView] = useState('home');
   const [orderDetails, setOrderDetails] = useState(null);
   const [surveyData, setSurveyData] = useState(null);
 
@@ -155,7 +155,27 @@ function App() {
   };
 
   const handleSectionChange = (section) => {
-    setActiveSection(section);
+    // Map the section names to the correct activeSection values
+    let mappedSection = section;
+
+    switch (section) {
+      case 'women':
+        mappedSection = 'women-all';
+        break;
+      case 'men':
+        mappedSection = 'men-all';
+        break;
+      case 'kids':
+        mappedSection = 'kids-all';
+        break;
+      case 'sale':
+        mappedSection = 'sale';
+        break;
+      default:
+        mappedSection = section;
+    }
+
+    setActiveSection(mappedSection);
     setCurrentView('products');
 
     // Update navigation history
@@ -197,12 +217,63 @@ function App() {
   };
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]);
+    setCart(prevCart => {
+      const existingItem = prevCart.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
   };
 
-  const handleRemoveFromCart = (index) => {
-    const newCart = cart.filter((_, i) => i !== index);
-    setCart(newCart);
+  const handleUpdateQuantity = (productId, newQuantity) => {
+    if (newQuantity <= 0) {
+      handleRemoveFromCart(productId);
+    } else {
+      setCart(prevCart =>
+        prevCart.map(item =>
+          item.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item
+        )
+      );
+    }
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+  };
+
+  const getCartItemQuantity = (productId) => {
+    const item = cart.find(item => item.id === productId);
+    return item ? item.quantity : 0;
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => {
+      const price = item.salePrice !== undefined ? item.salePrice : item.price;
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
+  const getTotalCartItems = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleViewCart = () => {
+    setCurrentView('cart');
+
+    // Update navigation history
+    const newHistory = [...navigationHistory];
+    if (newHistory[newHistory.length - 1] !== 'cart') {
+      newHistory.push('cart');
+    }
+    setNavigationHistory(newHistory);
   };
 
   const handleProceedToCheckout = () => {
@@ -273,17 +344,6 @@ function App() {
     }
   };
 
-  const handleViewCart = () => {
-    setCurrentView('cart');
-
-    // Update navigation history
-    const newHistory = [...navigationHistory];
-    if (newHistory[newHistory.length - 1] !== 'cart') {
-      newHistory.push('cart');
-    }
-    setNavigationHistory(newHistory);
-  };
-
   // Get featured products for homepage
   const getFeaturedProducts = () => {
     return productData.filter(product =>
@@ -346,16 +406,18 @@ function App() {
       return true;
     }
 
-    // New "all" section to show all products
-    if (activeSection === 'all') {
-      return matchesFilters(p);
-    }
-
+    // Handle gender-all sections (women-all, men-all, kids-all)
     if (activeSection.endsWith('-all')) {
       const gender = activeSection.split('-')[0];
-      return p.gender.toLowerCase() === gender && matchesFilters(p);
+      const genderMap = {
+        'women': 'Women',
+        'men': 'Men',
+        'kids': 'Kids'
+      };
+      return p.gender === genderMap[gender] && matchesFilters(p);
     }
 
+    // Handle specific gender-section combinations
     return `${p.gender.toLowerCase()}-${p.section}` === activeSection && matchesFilters(p);
   });
 
@@ -367,6 +429,8 @@ function App() {
             onSectionChange={handleSectionChange}
             featuredProducts={getFeaturedProducts()}
             onAddToCart={handleAddToCart}
+            getCartItemQuantity={getCartItemQuantity}
+            onUpdateQuantity={handleUpdateQuantity}
           />
         );
       case 'cart':
@@ -374,6 +438,7 @@ function App() {
           <CartView
             cart={cart}
             onRemoveFromCart={handleRemoveFromCart}
+            onUpdateQuantity={handleUpdateQuantity}
             onProceedToCheckout={handleProceedToCheckout}
             onContinueShopping={handleContinueShopping}
           />
@@ -430,6 +495,8 @@ function App() {
                   <ProductList
                     products={filteredProducts}
                     onAddToCart={handleAddToCart}
+                    getCartItemQuantity={getCartItemQuantity}
+                    onUpdateQuantity={handleUpdateQuantity}
                   />
                 </div>
               </div>
@@ -446,7 +513,7 @@ function App() {
           <Header
             onSectionChange={handleSectionChange}
             onFiltersReset={handleFiltersReset}
-            cartCount={cart.length}
+            cartCount={getTotalCartItems()}
             onViewCart={handleViewCart}
             onGoHome={handleGoHome}
             currentView={currentView}
