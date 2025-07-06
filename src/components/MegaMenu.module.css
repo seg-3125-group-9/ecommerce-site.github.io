@@ -1,0 +1,93 @@
+/* Mega navigation container */
+.megaNav {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+  position: relative;
+}
+
+.megaNav span {
+  text-decoration: none;
+}
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  padding: var(--spacing-sm);
+  cursor: pointer;
+}
+
+/* Dropdown content */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: var(--white);
+  border: 1px solid var(--medium-gray);
+  padding: var(--spacing-sm);
+  z-index: 999;
+  box-shadow: var(--shadow-medium);
+  min-width: 150px;
+  border-radius: var(--border-radius-sm);
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+}
+
+.dropdownContent div {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.dropdownContent div:hover {
+  background-color: var(--bg-color);
+}
+
+/* Dropdown trigger styling */
+.dropdown span {
+  color: var(--text-color);
+  transition: color var(--transition-fast);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+.dropdown span:hover {
+  color: var(--accent-color);
+  background-color: var(--bg-color);
+}
+
+/* Sale dropdown special styling */
+.dropdown span[data-sale="true"] {
+  color: var(--sale-highlight);
+  font-weight: bold;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 82, 0.1));
+  border-radius: var(--border-radius-sm);
+}
+
+.dropdown span[data-sale="true"]:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(238, 90, 82, 0.2));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .megaNav {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .dropdown {
+    padding: var(--spacing-xs);
+  }
+
+  .dropdownContent {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+  }
+}

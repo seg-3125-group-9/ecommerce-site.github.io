@@ -6,7 +6,18 @@ import {
   useNavigate,
   useLocation
 } from 'react-router-dom';
-import './App.css';
+import './App.css'; // Keep the original App.css import for now
+import Header from './components/Header';
+import FiltersSidebar from './components/FiltersSidebar';
+import ProductList from './components/ProductList';
+import CartView from './components/CartView';
+import CheckoutForm from './components/CheckoutForm';
+import OrderConfirmation from './components/OrderConfirmation';
+import SurveyForm from './components/SurveyForm';
+import SurveyThankYou from './components/SurveyThankYou';
+import NavigationBreadcrumb from './components/NavigationBreadcrumb';
+import Homepage from './components/Homepage';
+import BackButton from './components/BackButton';
 
 const homepageLabels = ['Bestseller', 'Popular', 'New', 'Trendy'];
 const productData = [
@@ -33,7 +44,7 @@ const productData = [
 
   // Women's Dresses
   { id: 16, name: 'Floral Dress', section: 'dresses', sizes: ['S', 'M', 'L'], color: 'Pink', material: 'Silk', gender: 'Women', price: 54.99, trend: 'New', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=200&h=250&fit=crop&crop=center' },
-  { id: 17, name: 'Black Maxi Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Black', material: 'Cotton', gender: 'Women', price: 49.99, image: 'https://images.unsplash.com/photo-1566479179817-0b0c80c82e14?w=200&h=250&fit=crop&crop=center', salePrice: 25.00 }, // 50% off
+  { id: 17, name: 'Black Maxi Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Black', material: 'Cotton', gender: 'Women', price: 49.99, image: 'https://plus.unsplash.com/premium_photo-1675253119026-b1c8b2802ce1?w=200&h=250&fit=crop&crop=center', salePrice: 25.00 }, // 50% off
   { id: 18, name: 'Red Mini Dress', section: 'dresses', sizes: ['XS', 'S'], color: 'Red', material: 'Linen', gender: 'Women', price: 46.99, style: 'Elegant', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=200&h=250&fit=crop&crop=center' },
   { id: 19, name: 'White Sundress', section: 'dresses', sizes: ['S', 'M'], color: 'White', material: 'Cotton', gender: 'Women', price: 52.99, image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=200&h=250&fit=crop&crop=center', salePrice: 42.49 }, // ~20% off
   { id: 20, name: 'Blue Wrap Dress', section: 'dresses', sizes: ['M', 'L'], color: 'Blue', material: 'Polyester', gender: 'Women', price: 48.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center' },
@@ -68,10 +79,10 @@ const productData = [
 
   // Kids' Bottoms
   { id: 41, name: 'Kid Joggers', section: 'bottoms', sizes: ['S', 'M'], color: 'Gray', material: 'Fleece', gender: 'Kids', price: 22.99, image: 'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=200&h=250&fit=crop&crop=center' },
-  { id: 42, name: 'Kid Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Blue', material: 'Cotton', gender: 'Kids', price: 19.99, image: 'https://images.unsplash.com/photo-1506629905607-d405872dbc7d?w=200&h=250&fit=crop&crop=center', salePrice: 10.00 }, // ~50% off
+  { id: 42, name: 'Kid Shorts', section: 'bottoms', sizes: ['S', 'M'], color: 'Blue', material: 'Cotton', gender: 'Kids', price: 19.99, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=250&fit=crop&crop=center', salePrice: 10.00 }, // ~50% off
   { id: 43, name: 'Kid Leggings', section: 'bottoms', sizes: ['XS', 'S'], color: 'Pink', material: 'Spandex', gender: 'Kids', price: 18.99, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=250&fit=crop&crop=center' },
   { id: 44, name: 'Kid Jeans', section: 'bottoms', sizes: ['S', 'M'], color: 'Denim', material: 'Denim', gender: 'Kids', price: 23.99, image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=200&h=250&fit=crop&crop=center' },
-  { id: 45, name: 'Kid Sweatpants', section: 'bottoms', sizes: ['S', 'M'], color: 'Black', material: 'Cotton', gender: 'Kids', price: 20.99, image: 'https://images.unsplash.com/photo-1506629905607-d405872dbc7d?w=200&h=250&fit=crop&crop=center', salePrice: 14.39 }, // ~31% off
+  { id: 45, name: 'Kid Sweatpants', section: 'bottoms', sizes: ['S', 'M'], color: 'Black', material: 'Cotton', gender: 'Kids', price: 20.99, image: 'https://images.unsplash.com/photo-1715532098035-a343b26eaeaa?w=200&h=250&fit=crop&crop=center', salePrice: 14.39 }, // ~31% off
 
   // Kids' Shoes
   { id: 46, name: 'Kid Sneakers', section: 'shoes', sizes: ['2', '3'], color: 'Red', material: 'Mesh', gender: 'Kids', price: 29.99, image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&h=250&fit=crop&crop=center' },
@@ -126,14 +137,66 @@ function App() {
   const [activeSection, setActiveSection] = useState('');
   const [filters, setFilters] = useState({});
   const [cart, setCart] = useState([]);
+  const [saleGenderFilters, setSaleGenderFilters] = useState([]);
+  const [saleSectionFilters, setSaleSectionFilters] = useState([]);
 
-  const [saleGenderFilters, setSaleGenderFilters] = useState([]); // for SALE page genders
-  const [saleSectionFilters, setSaleSectionFilters] = useState([]); // for SALE page subsections (e.g., tops, bottoms)
-  
+  // Shopping flow state
+  const [currentView, setCurrentView] = useState('home');
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [surveyData, setSurveyData] = useState(null);
+
+  // Navigation state
+  const [navigationHistory, setNavigationHistory] = useState(['home']);
+
+  const handleGoHome = () => {
+    setCurrentView('home');
+    setActiveSection('');
+    setNavigationHistory(['home']);
+  };
+
+  const handleSectionChange = (section) => {
+    // Map the section names to the correct activeSection values
+    let mappedSection = section;
+
+    switch (section) {
+      case 'women':
+        mappedSection = 'women-all';
+        break;
+      case 'men':
+        mappedSection = 'men-all';
+        break;
+      case 'kids':
+        mappedSection = 'kids-all';
+        break;
+      case 'sale':
+        mappedSection = 'sale';
+        break;
+      default:
+        mappedSection = section;
+    }
+
+    setActiveSection(mappedSection);
+    setCurrentView('products');
+
+    // Update navigation history
+    const newHistory = [...navigationHistory];
+    if (newHistory[newHistory.length - 1] !== 'products') {
+      newHistory.push('products');
+    }
+    setNavigationHistory(newHistory);
+  };
+
+  const handleFiltersReset = () => {
+    // Clear all filter states but stay on current section
+    setFilters({});
+    setSaleGenderFilters([]);
+    setSaleSectionFilters([]);
+    // Do NOT change currentView or activeSection
+  };
+
   const toggleSaleGender = (gender) => {
     setSaleGenderFilters(prev => {
       const updated = prev.includes(gender) ? prev.filter(g => g !== gender) : [...prev, gender];
-      // Reset subcategory filters if genders change
       setSaleSectionFilters([]);
       return updated;
     });
@@ -145,8 +208,6 @@ function App() {
     );
   };
 
-
-
   const handleCheckboxChange = (category, value) => {
     const current = filters[category] || [];
     const updated = current.includes(value)
@@ -155,13 +216,147 @@ function App() {
     setFilters({ ...filters, [category]: updated });
   };
 
+  const handleAddToCart = (product) => {
+    setCart(prevCart => {
+      const existingItem = prevCart.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  const handleUpdateQuantity = (productId, newQuantity) => {
+    if (newQuantity <= 0) {
+      handleRemoveFromCart(productId);
+    } else {
+      setCart(prevCart =>
+        prevCart.map(item =>
+          item.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item
+        )
+      );
+    }
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+  };
+
+  const getCartItemQuantity = (productId) => {
+    const item = cart.find(item => item.id === productId);
+    return item ? item.quantity : 0;
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => {
+      const price = item.salePrice !== undefined ? item.salePrice : item.price;
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
+  const getTotalCartItems = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleViewCart = () => {
+    setCurrentView('cart');
+
+    // Update navigation history
+    const newHistory = [...navigationHistory];
+    if (newHistory[newHistory.length - 1] !== 'cart') {
+      newHistory.push('cart');
+    }
+    setNavigationHistory(newHistory);
+  };
+
+  const handleProceedToCheckout = () => {
+    setCurrentView('checkout');
+
+    // Update navigation history
+    const newHistory = [...navigationHistory];
+    if (newHistory[newHistory.length - 1] !== 'checkout') {
+      newHistory.push('checkout');
+    }
+    setNavigationHistory(newHistory);
+  };
+
+  const handleBackToCart = () => {
+    setCurrentView('cart');
+  };
+
+  const handleContinueShopping = () => {
+    if (activeSection) {
+      setCurrentView('products');
+    } else {
+      setCurrentView('home');
+    }
+  };
+
+  const handleStartShopping = () => {
+    setCurrentView('home');
+    setActiveSection('');
+  };
+
+  const handleTakeSurvey = () => {
+    setCurrentView('survey');
+
+    // Update navigation history
+    const newHistory = [...navigationHistory];
+    newHistory.push('survey');
+    setNavigationHistory(newHistory);
+  };
+
+  const handleSubmitSurvey = (formData) => {
+    setSurveyData(formData);
+    setCurrentView('survey-thanks');
+  };
+
+  const handleSubmitOrder = (formData) => {
+    setOrderDetails(formData);
+    setCurrentView('confirmation');
+    setCart([]); // Clear cart after successful order
+  };
+
+  const handleSkipSurvey = () => {
+    setCurrentView('home');
+    setActiveSection('');
+    setNavigationHistory(['home']);
+  };
+
+  const handleSurveyComplete = () => {
+    setCurrentView('home');
+    setActiveSection('');
+    setNavigationHistory(['home']);
+  };
+
+  const handleNavigateFromBreadcrumb = (destination) => {
+    if (destination === 'home') {
+      handleGoHome();
+    } else if (destination === 'cart') {
+      setCurrentView('cart');
+    }
+  };
+
+  // Get featured products for homepage
+  const getFeaturedProducts = () => {
+    return productData.filter(product =>
+      ['Bestseller', 'Popular', 'New', 'Trending'].includes(product.trend)
+    ).slice(0, 4); // Changed from 8 to 4
+  };
+
   const matchesFilters = (product) => {
     for (const [key, values] of Object.entries(filters)) {
       if (values.length > 0) {
         if (key === 'size') {
           if (!product.sizes?.some(size => values.includes(size))) return false;
         } else if (key === 'price') {
-          // Use salePrice if available, otherwise price
           const price = product.salePrice !== undefined ? product.salePrice : product.price;
           const priceMatch = values.some(range => {
             if (range === '$10 and under') return price <= 10;
@@ -184,13 +379,9 @@ function App() {
   const filteredProducts = productData.filter((p) => {
     if (activeSection === 'sale') {
       if (!p.salePrice) return false;
-
       if (saleGenderFilters.length > 0 && !saleGenderFilters.includes(p.gender)) return false;
-
       if (saleSectionFilters.length > 0 && !saleSectionFilters.includes(p.section)) return false;
 
-      // Also apply the usual filters (size, color, price, etc) on top
-      // Check if product matches ALL filters except gender and section (which are handled separately)
       for (const [key, values] of Object.entries(filters)) {
         if (values.length > 0) {
           if (key === 'size') {
@@ -212,281 +403,131 @@ function App() {
           }
         }
       }
-
       return true;
     }
 
-
-    // original logic for other sections:
+    // Handle gender-all sections (women-all, men-all, kids-all)
     if (activeSection.endsWith('-all')) {
       const gender = activeSection.split('-')[0];
-      return p.gender.toLowerCase() === gender && matchesFilters(p);
+      const genderMap = {
+        'women': 'Women',
+        'men': 'Men',
+        'kids': 'Kids'
+      };
+      return p.gender === genderMap[gender] && matchesFilters(p);
     }
 
+    // Handle specific gender-section combinations
     return `${p.gender.toLowerCase()}-${p.section}` === activeSection && matchesFilters(p);
   });
 
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'home':
+        return (
+          <Homepage
+            onSectionChange={handleSectionChange}
+            featuredProducts={getFeaturedProducts()}
+            onAddToCart={handleAddToCart}
+            getCartItemQuantity={getCartItemQuantity}
+            onUpdateQuantity={handleUpdateQuantity}
+          />
+        );
+      case 'cart':
+        return (
+          <CartView
+            cart={cart}
+            onRemoveFromCart={handleRemoveFromCart}
+            onUpdateQuantity={handleUpdateQuantity}
+            onProceedToCheckout={handleProceedToCheckout}
+            onContinueShopping={handleContinueShopping}
+          />
+        );
+      case 'checkout':
+        return (
+          <CheckoutForm
+            cart={cart}
+            onSubmitOrder={handleSubmitOrder}
+            onBackToCart={handleBackToCart}
+          />
+        );
+      case 'confirmation':
+        return (
+          <OrderConfirmation
+            orderDetails={orderDetails}
+            onStartShopping={handleStartShopping}
+            onTakeSurvey={handleTakeSurvey}
+          />
+        );
+      case 'survey':
+        return (
+          <SurveyForm
+            onSubmitSurvey={handleSubmitSurvey}
+            onSkipSurvey={handleSkipSurvey}
+          />
+        );
+      case 'survey-thanks':
+        return (
+          <SurveyThankYou
+            surveyData={surveyData}
+            onContinueShopping={handleSurveyComplete}
+          />
+        );
+      default: // 'products'
+        return (
+          <div className="container-fluid">
+            {activeSection && (
+              <div className="row">
+                <div className="col-lg-3 col-md-4">
+                  <FiltersSidebar
+                    activeSection={activeSection}
+                    filters={filters}
+                    onFilterChange={handleCheckboxChange}
+                    saleGenderFilters={saleGenderFilters}
+                    saleSectionFilters={saleSectionFilters}
+                    onSaleGenderToggle={toggleSaleGender}
+                    onSaleSectionToggle={toggleSaleSection}
+                    productData={productData}
+                    onFiltersReset={handleFiltersReset}
+                  />
+                </div>
+                <div className="col-lg-9 col-md-8">
+                  <ProductList
+                    products={filteredProducts}
+                    onAddToCart={handleAddToCart}
+                    getCartItemQuantity={getCartItemQuantity}
+                    onUpdateQuantity={handleUpdateQuantity}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        );
+    }
+  };
 
   return (
     <div className="App">
       <div className="Top-strip">
-
-        <header className="App-header">
-          <h1>Wardrobe & Co.</h1>
-          <nav className="Mega-nav">
-          {Object.entries(navStructure).map(([main, subs]) => (
-            <div className="dropdown" key={main}>
-              <span
-                style={main === 'SALE: UP TO 50% OFF' ? { color: 'red', fontWeight: 'bold' } : {}}
-                onClick={() => {
-                  if (main === 'SALE: UP TO 50% OFF') {
-                    setActiveSection('sale');
-                  } else {
-                    setActiveSection(main.toLowerCase() + '-all');  // Add "-all" for main categories
-                  }
-                  setFilters({});
-                }}
-              >
-                {main}
-              </span>
-              {subs.length > 0 && (
-                <div className="dropdown-content">
-                  {subs.map(sub => (
-                    <div
-                      key={sub}
-                      onClick={() => {
-                        if (main === 'SALE: UP TO 50% OFF') {
-                          setActiveSection('sale');
-                        } else {
-                          setActiveSection(`${main.toLowerCase()}-${sub}`);
-                        }
-                        setFilters({});
-                      }}
-                    >
-                      {sub.charAt(0).toUpperCase() + sub.slice(1)}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-
-
-          </nav>
-        </header>
+        <div className="App-header">
+          <Header
+            onSectionChange={handleSectionChange}
+            onFiltersReset={handleFiltersReset}
+            cartCount={getTotalCartItems()}
+            onViewCart={handleViewCart}
+            onGoHome={handleGoHome}
+            currentView={currentView}
+          />
+        </div>
       </div>
 
-      {activeSection && (
-        <div className="Main-content">
-          <aside className="Filters-vertical">
-            <h2>Filters</h2>
-            {activeSection === 'sale' ? (
-              <>
-                {/* Gender filters */}
-                <div>
-                  <h4>Gender</h4>
-                  {['Women', 'Men', 'Kids'].map(gender => (
-                    <label key={gender}>
-                      <input
-                        type="checkbox"
-                        checked={saleGenderFilters.includes(gender)}
-                        onChange={() => toggleSaleGender(gender)}
-                      />
-                      {gender}
-                    </label>
-                  ))}
-                </div>
+      <NavigationBreadcrumb
+        currentView={currentView}
+        activeSection={activeSection}
+        onNavigate={handleNavigateFromBreadcrumb}
+      />
 
-                {/* Subcategory filters */}
-                <div>
-                  <h4>Category</h4>
-                  {(() => {
-                    // Determine which subcategories to show, based on selected genders
-                    let applicableSections = [];
-
-                    if (saleGenderFilters.length > 0) {
-                      const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
-                      applicableSections = Array.from(new Set(filtered.map(p => p.section)));
-                    } else {
-                      applicableSections = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
-                    }
-
-                    return applicableSections.map(section => (
-                      <label key={section}>
-                        <input
-                          type="checkbox"
-                          checked={saleSectionFilters.includes(section)}
-                          onChange={() => toggleSaleSection(section)}
-                        />
-                        {section.charAt(0).toUpperCase() + section.slice(1)}
-                      </label>
-                    ));
-                  })()}
-                </div>
-
-                {/* Now the usual filters combined for selected subsections */}
-
-                {(() => {
-                  // Combine all the applicable filters (size, color, price, style, etc) from selected subcategories
-                  // If no subsections selected, combine all sale subsections for selected genders (or all if none selected)
-                  
-                  let subsectionsToUse = [];
-
-                  if (saleSectionFilters.length > 0) {
-                    subsectionsToUse = saleSectionFilters;
-                  } else if (saleGenderFilters.length > 0) {
-                    // All subsections from selected genders
-                    const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
-                    subsectionsToUse = Array.from(new Set(filtered.map(p => p.section)));
-                  } else {
-                    subsectionsToUse = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
-                  }
-
-                  // Combine filters from these subsections
-                  const combinedFilters = {};
-                  subsectionsToUse.forEach(section => {
-                    const sectionFilters = filtersPerSection[section];
-                    if (sectionFilters) {
-                      Object.entries(sectionFilters).forEach(([cat, vals]) => {
-                        if (!combinedFilters[cat]) combinedFilters[cat] = new Set();
-                        vals.forEach(v => combinedFilters[cat].add(v));
-                      });
-                    }
-                  });
-
-                  const combinedFiltersArr = Object.entries(combinedFilters).map(
-                    ([cat, valSet]) => [cat, Array.from(valSet)]
-                  );
-
-                  return combinedFiltersArr.map(([category, values]) => (
-                    <div key={category}>
-                      <h4>{category.toUpperCase()}</h4>
-                      {values.map(value => (
-                        <label key={value}>
-                          <input
-                            type="checkbox"
-                            checked={(filters[category] || []).includes(value)}
-                            onChange={() => handleCheckboxChange(category, value)}
-                          />
-                          {value}
-                        </label>
-                      ))}
-                    </div>
-                  ));
-                })()}
-              </>
-            ) : (
-              // Your existing filters for non-sale pages (keep unchanged)
-              (() => {
-                const keyPart = activeSection.split('-')[1];
-                if (activeSection.endsWith('-all')) {
-                  const gender = activeSection.split('-')[0].toUpperCase();
-                  const subsections = navStructure[gender] || [];
-
-                  const combinedFilters = {};
-                  subsections.forEach(section => {
-                    const sectionFilters = filtersPerSection[section];
-                    if (sectionFilters) {
-                      Object.entries(sectionFilters).forEach(([cat, vals]) => {
-                        if (!combinedFilters[cat]) {
-                          combinedFilters[cat] = new Set();
-                        }
-                        vals.forEach(v => combinedFilters[cat].add(v));
-                      });
-                    }
-                  });
-
-                  const combinedFiltersArr = Object.entries(combinedFilters).map(
-                    ([cat, valSet]) => [cat, Array.from(valSet)]
-                  );
-
-                  return combinedFiltersArr.map(([category, values]) => (
-                    <div key={category}>
-                      <h4>{category.toUpperCase()}</h4>
-                      {values.map(value => (
-                        <label key={value}>
-                          <input
-                            type="checkbox"
-                            checked={(filters[category] || []).includes(value)}
-                            onChange={() => handleCheckboxChange(category, value)}
-                          />
-                          {value}
-                        </label>
-                      ))}
-                    </div>
-                  ));
-                } else {
-                  return Object.entries(filtersPerSection[keyPart] || {}).map(([category, values]) => (
-                    <div key={category}>
-                      <h4>{category.toUpperCase()}</h4>
-                      {values.map(value => (
-                        <label key={value}>
-                          <input
-                            type="checkbox"
-                            checked={(filters[category] || []).includes(value)}
-                            onChange={() => handleCheckboxChange(category, value)}
-                          />
-                          {value}
-                        </label>
-                      ))}
-                    </div>
-                  ));
-                }
-              })()
-            )}
-
-
-
-          </aside>
-
-          <section className="Product-list">
-            {filteredProducts.map(p => {
-              const discountPercent = p.salePrice 
-                ? Math.round(((p.price - p.salePrice) / p.price) * 100)
-                : 0;
-
-              return (
-                <div key={p.id} className="Product-card">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="Product-img"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/200x250?text=No+Image';
-                    }}
-                  />
-
-                  <h3>{p.name}</h3>
-                  <p className="Product-price">
-                    {p.salePrice ? (
-                      <>
-                        <span style={{ textDecoration: 'line-through', color: 'gray' }}>
-                          ${p.price.toFixed(2)}
-                        </span>{' '}
-                        <span style={{ color: 'red' }}>${p.salePrice.toFixed(2)}</span>
-                      </>
-                    ) : (
-                      <>${p.price.toFixed(2)}</>
-                    )}
-                  </p>
-
-                  {p.salePrice && (
-                    <p style={{ color: 'black', fontWeight: 'bold', marginTop: '-8px', marginBottom: '8px' }}>
-                      {discountPercent}% OFF
-                    </p>
-                  )}
-
-                  <button onClick={() => setCart([...cart, p])}>Add to Cart</button>
-                </div>
-              );
-            })}
-
-            {filteredProducts.length === 0 && <p>No items match selected filters.</p>}
-          </section>
-
-        </div>
-      )}
+      {renderCurrentView()}
     </div>
   );
 }

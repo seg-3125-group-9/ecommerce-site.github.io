@@ -1,0 +1,243 @@
+/* Bootstrap Theme Customizations */
+
+/* Bootstrap Button Customizations */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-outline-danger {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-outline-danger:hover,
+.btn-outline-danger:focus,
+.btn-outline-danger:active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--white);
+}
+
+.btn-link {
+  color: var(--text-color);
+  font-family: var(--font-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+/* Bootstrap Card Customizations */
+.card {
+  border: 1px solid var(--light-gray);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-light);
+  transition: all var(--transition-fast);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+.card-title {
+  color: var(--primary-color);
+  font-family: var(--font-primary);
+  font-weight: 600;
+}
+
+.card-text {
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* Bootstrap Form Customizations */
+.form-control {
+  border: 2px solid var(--light-gray);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-secondary);
+  transition: border-color var(--transition-fast);
+}
+
+.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(230, 57, 70, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: var(--sale-highlight);
+}
+
+.form-label {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-family: var(--font-secondary);
+}
+
+.form-check-input {
+  accent-color: var(--accent-color);
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.form-check-label {
+  color: var(--text-color);
+  font-family: var(--font-secondary);
+}
+
+.form-select {
+  border: 2px solid var(--light-gray);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-secondary);
+  transition: border-color var(--transition-fast);
+}
+
+.form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(230, 57, 70, 0.25);
+}
+
+/* Bootstrap Progress Bar Customizations */
+.progress {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-sm);
+}
+
+.progress-bar {
+  background-color: var(--white);
+  transition: width var(--transition-medium);
+}
+
+/* Bootstrap Container Customizations */
+.container,
+.container-fluid {
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+@media (max-width: 576px) {
+  .container,
+  .container-fluid {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+}
+
+/* Bootstrap Grid Customizations */
+.row {
+  margin-left: calc(-1 * var(--spacing-md));
+  margin-right: calc(-1 * var(--spacing-md));
+}
+
+.row > * {
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+/* Bootstrap Text Utilities Override */
+.text-primary-custom {
+  color: var(--primary-color) !important;
+}
+
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+.text-sale {
+  color: var(--sale-highlight) !important;
+}
+
+/* Bootstrap Background Utilities Override */
+.bg-primary-custom {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent-color) !important;
+}
+
+.bg-light-custom {
+  background-color: var(--bg-color) !important;
+}
+
+/* Bootstrap Border Utilities Override */
+.border-primary-custom {
+  border-color: var(--primary-color) !important;
+}
+
+.border-accent {
+  border-color: var(--accent-color) !important;
+}
+
+/* Bootstrap Typography Customizations */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-primary);
+  color: var(--primary-color);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Ensure consistent font family throughout Bootstrap components */
+body,
+.btn,
+.form-control,
+.form-select,
+.card-text,
+p,
+span {
+  font-family: var(--font-secondary);
+}
+
+/* Bootstrap responsive utilities enhancement */
+@media (max-width: 768px) {
+  .btn-lg {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 1em;
+  }
+  
+  .card {
+    margin-bottom: var(--spacing-md);
+  }
+}

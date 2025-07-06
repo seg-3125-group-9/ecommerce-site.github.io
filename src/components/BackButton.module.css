@@ -1,0 +1,50 @@
+/* Back button styling */
+.backButton {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  text-decoration: none;
+}
+
+.backButton:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  color: var(--white);
+  transform: translateX(-2px);
+}
+
+.backButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.backButton:disabled:hover {
+  transform: none;
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+/* Back button icon */
+.backIcon {
+  transition: transform var(--transition-fast);
+}
+
+.backButton:hover:not(:disabled) .backIcon {
+  transform: translateX(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .backButton {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.9em;
+  }
+}

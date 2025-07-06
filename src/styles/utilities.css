@@ -1,0 +1,133 @@
+/* Common button utilities */
+.btn-base {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-fast);
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--accent-color);
+}
+
+.btn-secondary-custom {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 10px 22px;
+}
+
+.btn-secondary-custom:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Layout utilities */
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Card utilities */
+.card-base {
+  background-color: var(--white);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-medium);
+  transition: var(--transition-fast);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-heavy);
+}
+
+/* Text utilities */
+.text-sale {
+  color: var(--sale-highlight);
+  font-weight: bold;
+}
+
+.text-muted {
+  opacity: 0.8;
+}
+
+/* Spacing utilities (complement Bootstrap) */
+.spacing-xs { margin: var(--spacing-xs); }
+.spacing-sm { margin: var(--spacing-sm); }
+.spacing-md { margin: var(--spacing-md); }
+.spacing-lg { margin: var(--spacing-lg); }
+.spacing-xl { margin: var(--spacing-xl); }
+
+/* Grid utilities - Use Bootstrap grid instead */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Bootstrap integration utilities */
+.bootstrap-card-hover {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.bootstrap-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.full-height {
+  height: 100%;
+}
+
+.min-height-400 {
+  min-height: 400px;
+}
+
+/* Form utilities for Bootstrap integration */
+.form-section-spacing {
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-group-spacing {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Bootstrap responsive utilities extension */
+@media (max-width: 576px) {
+  .container-custom {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .grid-auto-fit,
+  .grid-auto-fill {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
