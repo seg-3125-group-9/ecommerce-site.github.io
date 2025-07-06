@@ -1,187 +1,141 @@
 import React from 'react';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-import styles from './Homepage.module.css';
 
 const Homepage = ({ onSectionChange, featuredProducts, onAddToCart }) => {
-  const categories = [
-    {
-      id: 'sale',
-      title: 'SALE: UP TO 50% OFF',
-      icon: '🔥',
-      description: 'Limited time offers!',
-      isSale: true
-    },
-    {
-      id: 'women-all',
-      title: 'WOMEN',
-      icon: '👗',
-      description: 'Elegant & trendy styles'
-    },
-    {
-      id: 'men-all',
-      title: 'MEN',
-      icon: '👔',
-      description: 'Modern & classic looks'
-    },
-    {
-      id: 'kids-all',
-      title: 'KIDS',
-      icon: '🧸',
-      description: 'Fun & comfortable wear'
-    }
-  ];
+    const handleExploreSection = (section) => {
+        onSectionChange(section);
+    };
 
-  const benefits = [
-    {
-      icon: '🚚',
-      title: 'Free Shipping',
-      description: 'On orders over $75'
-    },
-    {
-      icon: '↩️',
-      title: 'Easy Returns',
-      description: '30-day return policy'
-    },
-    {
-      icon: '💎',
-      title: 'Quality Guarantee',
-      description: 'Premium materials only'
-    },
-    {
-      icon: '🎯',
-      title: 'Perfect Fit',
-      description: 'Size guide & expert help'
-    }
-  ];
-
-  return (
-    <div className={styles.homepage}>
-      {/* Hero Section */}
-      <section className={styles.heroSection}>
-        <Container>
-          <div className={styles.heroContent}>
-            <h2>Discover Your Perfect Style</h2>
-            <p className={styles.heroSubtitle}>
-              Welcome to Wardrobe & Co.! We've curated the perfect collection just for you. 
-              From timeless classics to the latest trends, find pieces that make you feel confident and stylish.
-            </p>
-            <div className={styles.heroActions}>
-              <Button 
-                variant="light" 
-                size="lg"
-                className={styles.heroBtn}
-                onClick={() => onSectionChange('sale')}
-              >
-                Shop Sale - Up to 50% Off! 🔥
-              </Button>
-              <Button 
-                variant="outline-light" 
-                size="lg"
-                className={styles.heroBtn}
-                onClick={() => onSectionChange('all')}
-              >
-                Browse All Products
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Featured Categories */}
-      <section className={styles.featuredCategories}>
-        <h3>Shop by Category</h3>
-        <Container>
-          <Row className="g-4">
-            {categories.map((category) => (
-              <Col key={category.id} xs={6} md={4} lg={3}>
-                <Card 
-                  className={`${styles.categoryCard} ${category.isSale ? styles.saleCategory : ''} h-100`}
-                  onClick={() => onSectionChange(category.id)}
-                >
-                  <Card.Body className="d-flex flex-column align-items-center">
-                    <div className={styles.categoryIcon}>{category.icon}</div>
-                    <Card.Title as="h4">{category.title}</Card.Title>
-                    <Card.Text>{category.description}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
-      {/* Featured Products */}
-      <section className={styles.featuredProducts}>
-        <h3>Pieces Our Customers Can't Stop Talking About</h3>
-        <p className={styles.sectionSubtitle}>
-          Bestsellers, new arrivals, and trending items curated just for you
-        </p>
-        <Container>
-          <Row className="g-4">
-            {featuredProducts.map((product) => (
-              <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
-                <Card className={`${styles.featuredProductCard} h-100`}>
-                  <Card.Img 
-                    variant="top" 
-                    src={product.image} 
-                    alt={product.name}
-                    className={styles.featuredProductImage}
-                  />
-                  <Card.Body className="d-flex flex-column">
-                    <Card.Title as="h5">{product.name}</Card.Title>
-                    <div className={`${styles.featuredProductPrice} mt-auto`}>
-                      {product.salePrice ? (
-                        <>
-                          <span className="text-decoration-line-through text-muted me-2">
-                            ${product.price.toFixed(2)}
-                          </span>
-                          <span className="text-danger fw-bold">
-                            ${product.salePrice.toFixed(2)}
-                          </span>
-                          <div className="badge bg-danger ms-2">
-                            Save {Math.round(((product.price - product.salePrice) / product.price) * 100)}%
-                          </div>
-                        </>
-                      ) : (
-                        <span className="fw-bold text-primary-custom">
-                          ${product.price.toFixed(2)}
-                        </span>
-                      )}
+    return (
+        <div className="homepage">
+            <section className="hero-section">
+                <div className="hero-content">
+                    <h2>Discover Your Perfect Style</h2>
+                    <p className="hero-subtitle">
+                        Welcome to Wardrobe & Co.! From everyday essentials to statement pieces,
+                        we've curated the perfect collection just for you.
+                    </p>
+                    <div className="hero-actions">
+                        <button
+                            onClick={() => handleExploreSection('sale')}
+                            className="btn-primary hero-btn"
+                        >
+                            Shop Sale - Up to 50% Off! 🔥
+                        </button>
+                        <button
+                            onClick={() => handleExploreSection('all')}
+                            className="btn-secondary hero-btn"
+                        >
+                            Explore All Products
+                        </button>
                     </div>
-                    <Button 
-                      variant="primary"
-                      className={`${styles.featuredAddBtn} mt-3`}
-                      onClick={() => onAddToCart(product)}
-                    >
-                      Add to Cart
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className={styles.whyChooseUs}>
-        <h3>Why Shop With Us?</h3>
-        <Container>
-          <Row className="g-4">
-            {benefits.map((benefit, index) => (
-              <Col key={index} xs={6} md={3}>
-                <div className={styles.benefitItem}>
-                  <div className={styles.benefitIcon}>{benefit.icon}</div>
-                  <h4>{benefit.title}</h4>
-                  <p>{benefit.description}</p>
                 </div>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-    </div>
-  );
+            </section>
+
+            <section className="featured-categories">
+                <h3>Shop by Category</h3>
+                <div className="category-grid">
+                    <div
+                        className="category-card"
+                        onClick={() => handleExploreSection('women-all')}
+                    >
+                        <div className="category-icon">👗</div>
+                        <h4>Women</h4>
+                        <p>Discover the latest trends</p>
+                    </div>
+                    <div
+                        className="category-card"
+                        onClick={() => handleExploreSection('men-all')}
+                    >
+                        <div className="category-icon">👔</div>
+                        <h4>Men</h4>
+                        <p>Classic & contemporary styles</p>
+                    </div>
+                    <div
+                        className="category-card"
+                        onClick={() => handleExploreSection('kids-all')}
+                    >
+                        <div className="category-icon">👶</div>
+                        <h4>Kids</h4>
+                        <p>Fun & comfortable wear</p>
+                    </div>
+                    <div
+                        className="category-card sale-category"
+                        onClick={() => handleExploreSection('sale')}
+                    >
+                        <div className="category-icon">🏷️</div>
+                        <h4>Sale</h4>
+                        <p>Amazing deals await!</p>
+                    </div>
+                </div>
+            </section>
+
+            {featuredProducts && featuredProducts.length > 0 && (
+                <section className="featured-products">
+                    <h3>Trending Now</h3>
+                    <p className="section-subtitle">Pieces our customers can't stop talking about</p>
+                    <div className="featured-products-grid">
+                        {featuredProducts.slice(0, 4).map(product => (
+                            <div key={product.id} className="featured-product-card">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="featured-product-image"
+                                    onError={(e) => {
+                                        e.target.src = 'https://via.placeholder.com/200x250?text=No+Image';
+                                    }}
+                                />
+                                <div className="featured-product-info">
+                                    <h5>{product.name}</h5>
+                                    <div className="featured-product-price">
+                                        {product.salePrice ? (
+                                            <>
+                                                <span className="original-price">${product.price.toFixed(2)}</span>
+                                                <span className="sale-price">${product.salePrice.toFixed(2)}</span>
+                                            </>
+                                        ) : (
+                                            <span className="regular-price">${product.price.toFixed(2)}</span>
+                                        )}
+                                    </div>
+                                    <button
+                                        onClick={() => onAddToCart(product)}
+                                        className="btn-primary featured-add-btn"
+                                    >
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <section className="why-choose-us">
+                <h3>Why Shop With Us?</h3>
+                <div className="benefits-grid">
+                    <div className="benefit-item">
+                        <div className="benefit-icon">🚚</div>
+                        <h4>Free Shipping</h4>
+                        <p>On orders over $50</p>
+                    </div>
+                    <div className="benefit-item">
+                        <div className="benefit-icon">↩️</div>
+                        <h4>Easy Returns</h4>
+                        <p>30-day return policy</p>
+                    </div>
+                    <div className="benefit-item">
+                        <div className="benefit-icon">💬</div>
+                        <h4>Customer Support</h4>
+                        <p>We're here to help!</p>
+                    </div>
+                    <div className="benefit-item">
+                        <div className="benefit-icon">✨</div>
+                        <h4>Quality Guarantee</h4>
+                        <p>Premium materials & craftsmanship</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
 };
 
 export default Homepage;

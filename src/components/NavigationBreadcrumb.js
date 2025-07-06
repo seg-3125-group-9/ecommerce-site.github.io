@@ -1,32 +1,51 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import styles from './NavigationBreadcrumb.module.css';
 
 const NavigationBreadcrumb = ({ currentView, activeSection, onNavigate }) => {
     const getBreadcrumbItems = () => {
         const items = [
-            { label: 'Home', destination: 'home' }
+            { label: 'Home', key: 'home', action: () => onNavigate('home') }
         ];
 
-        if (currentView === 'products' && activeSection) {
+        if (activeSection && currentView === 'products') {
             const sectionName = getSectionDisplayName(activeSection);
             items.push({
                 label: sectionName,
-                destination: null
+                key: 'products',
+                action: null
             });
-        } else if (currentView === 'cart') {
-            items.push({ label: 'Shopping Cart', current: true });
-        } else if (currentView === 'checkout') {
+        }
+
+        if (currentView === 'cart') {
+            items.push({
+                label: 'Shopping Cart',
+                key: 'cart',
+                action: null
+            });
+        }
+
+        if (currentView === 'checkout') {
             items.push(
-                { label: 'Shopping Cart', destination: 'cart' },
-                { label: 'Checkout', current: true }
+                { label: 'Shopping Cart', key: 'cart', action: () => onNavigate('cart') },
+                { label: 'Checkout', key: 'checkout', action: null }
             );
-        } else if (currentView === 'confirmation') {
-            items.push({ label: 'Order Confirmation', current: true });
-        } else if (currentView === 'survey') {
-            items.push({ label: 'Survey', current: true });
-        } else if (currentView === 'survey-thanks') {
-            items.push({ label: 'Thank You', current: true });
+        }
+
+        if (currentView === 'confirmation') {
+            items.push(
+                { label: 'Order Complete', key: 'confirmation', action: null }
+            );
+        }
+
+        if (currentView === 'survey') {
+            items.push(
+                { label: 'Your Feedback', key: 'survey', action: null }
+            );
+        }
+
+        if (currentView === 'survey-thanks') {
+            items.push(
+                { label: 'Thank You', key: 'survey-thanks', action: null }
+            );
         }
 
         return items;
@@ -43,36 +62,28 @@ const NavigationBreadcrumb = ({ currentView, activeSection, onNavigate }) => {
     const breadcrumbItems = getBreadcrumbItems();
 
     if (breadcrumbItems.length <= 1) {
-        return null;
+        return null; // Don't show breadcrumb for home only
     }
 
     return (
-        <nav className={styles.navigationBreadcrumb} aria-label="Breadcrumb navigation">
-            <div className={styles.breadcrumbContainer}>
+        <nav className="navigation-breadcrumb">
+            <div className="breadcrumb-container">
                 {breadcrumbItems.map((item, index) => (
-                    <React.Fragment key={index}>
-                        <div className={styles.breadcrumbItem}>
-                            {item.current ? (
-                                <span className={styles.breadcrumbCurrent} aria-current="page">
-                                    {item.label}
-                                </span>
-                            ) : (
-                                <Button
-                                    variant="link"
-                                    className={styles.breadcrumbLink}
-                                    onClick={() => onNavigate(item.destination)}
-                                    size="sm"
-                                >
-                                    {item.label}
-                                </Button>
-                            )}
-                        </div>
-                        {index < breadcrumbItems.length - 1 && (
-                            <span className={styles.breadcrumbSeparator} aria-hidden="true">
-                                ›
-                            </span>
+                    <span key={item.key} className="breadcrumb-item">
+                        {item.action ? (
+                            <button
+                                onClick={item.action}
+                                className="breadcrumb-link"
+                            >
+                                {item.label}
+                            </button>
+                        ) : (
+                            <span className="breadcrumb-current">{item.label}</span>
                         )}
-                    </React.Fragment>
+                        {index < breadcrumbItems.length - 1 && (
+                            <span className="breadcrumb-separator">›</span>
+                        )}
+                    </span>
                 ))}
             </div>
         </nav>

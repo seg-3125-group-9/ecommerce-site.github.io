@@ -1,320 +1,325 @@
 import React, { useState } from 'react';
-import { Container, Button, Form, Card, ProgressBar } from 'react-bootstrap';
-import styles from './SurveyForm.module.css';
 
 const SurveyForm = ({ onSubmitSurvey, onSkipSurvey }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    rating: '',
-    category: '',
-    improvements: '',
-    recommend: '',
-    email: '',
-    newsletter: false
-  });
+    const [formData, setFormData] = useState({
+        overallExperience: '',
+        shoppingEase: '',
+        productQuality: '',
+        checkoutProcess: '',
+        wouldRecommend: '',
+        favoriteFeature: '',
+        improvements: '',
+        email: '',
+        allowContact: false
+    });
 
-  const totalSteps = 3;
-  const progressPercentage = (currentStep / totalSteps) * 100;
+    const [currentStep, setCurrentStep] = useState(1);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const totalSteps = 3;
 
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
 
-  const handleNext = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent event bubbling
 
-  const handlePrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+        // Only submit if we're on the last step
+        if (currentStep !== totalSteps) {
+            return;
+        }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmitSurvey(formData);
-  };
+        setIsSubmitting(true);
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <div className={styles.surveyStep}>
-            <h3>Tell us about your experience! 🌟</h3>
-            <p className={styles.stepDescription}>
-              Your feedback helps us create an even better shopping experience for you and other customers.
-            </p>
+        // Simulate API call
+        setTimeout(() => {
+            onSubmitSurvey(formData);
+            setIsSubmitting(false);
+        }, 1000);
+    };
 
-            {/* Step indicator */}
-            <div className={styles.stepIndicator}>
-              <div className={`${styles.stepItem} ${styles.active}`}>
-                <div className={styles.stepNumber}>1</div>
-                <span>Experience</span>
-              </div>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>2</div>
-                <span>Feedback</span>
-              </div>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>3</div>
-                <span>Contact</span>
-              </div>
+    const handleNext = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentStep < totalSteps) {
+            setCurrentStep(currentStep + 1);
+        }
+    };
+
+    const handlePrevious = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    const renderProgressBar = () => (
+        <div className="survey-progress">
+            <div className="progress-bar">
+                <div
+                    className="progress-fill"
+                    style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                ></div>
+            </div>
+            <span className="progress-text">Step {currentStep} of {totalSteps}</span>
+        </div>
+    );
+
+    const renderStep1 = () => (
+        <div className="survey-step">
+            <h3>How was your shopping experience? 🛍️</h3>
+            <p className="step-description">We'd love to know how we did today!</p>
+
+            <div className="question-group">
+                <label className="question-label">How would you rate your overall experience?</label>
+                <div className="rating-options">
+                    {['Excellent', 'Good', 'Fair', 'Poor'].map(option => (
+                        <label key={option} className="rating-option">
+                            <input
+                                type="radio"
+                                name="overallExperience"
+                                value={option}
+                                checked={formData.overallExperience === option}
+                                onChange={handleInputChange}
+                            />
+                            <span className="rating-label">{option}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <div className={styles.questionGroup}>
-              <Form.Label className={styles.questionLabel}>
-                How would you rate your overall shopping experience?
-              </Form.Label>
-              <div className={styles.ratingOptions}>
-                {['Excellent', 'Good', 'Average', 'Poor'].map(rating => (
-                  <div 
-                    key={rating} 
-                    className={`${styles.ratingOption} ${formData.rating === rating ? styles.selected : ''}`}
-                    onClick={() => handleInputChange('rating', rating)}
-                  >
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={rating}
-                      checked={formData.rating === rating}
-                      onChange={() => {}} // Handled by onClick above
-                      className={styles.hiddenRadio}
-                      aria-label={rating}
-                    />
-                    <div className={styles.customRadio}></div>
-                    <span className={styles.ratingLabel}>
-                      {rating}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <div className="question-group">
+                <label className="question-label">How easy was it to find what you were looking for?</label>
+                <div className="rating-options">
+                    {['Very Easy', 'Easy', 'Somewhat Difficult', 'Very Difficult'].map(option => (
+                        <label key={option} className="rating-option">
+                            <input
+                                type="radio"
+                                name="shoppingEase"
+                                value={option}
+                                checked={formData.shoppingEase === option}
+                                onChange={handleInputChange}
+                            />
+                            <span className="rating-label">{option}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <div className={styles.questionGroup}>
-              <Form.Label className={styles.questionLabel}>
-                What type of products are you most interested in?
-              </Form.Label>
-              <Form.Select
-                className={styles.surveySelect}
-                value={formData.category}
-                onChange={(e) => handleInputChange('category', e.target.value)}
-              >
-                <option value="">Select a category...</option>
-                <option value="women">Women's Clothing</option>
-                <option value="men">Men's Clothing</option>
-                <option value="kids">Kids' Clothing</option>
-                <option value="accessories">Accessories</option>
-                <option value="all">All Categories</option>
-              </Form.Select>
+            <div className="question-group">
+                <label className="question-label">How satisfied are you with our product selection?</label>
+                <div className="rating-options">
+                    {['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied'].map(option => (
+                        <label key={option} className="rating-option">
+                            <input
+                                type="radio"
+                                name="productQuality"
+                                value={option}
+                                checked={formData.productQuality === option}
+                                onChange={handleInputChange}
+                            />
+                            <span className="rating-label">{option}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
-          </div>
-        );
+        </div>
+    );
 
-      case 2:
-        return (
-          <div className={styles.surveyStep}>
-            <h3>Help us improve! 💡</h3>
-            <p className={styles.stepDescription}>
-              Share your thoughts on how we can make your shopping experience even better.
-            </p>
+    const renderStep2 = () => (
+        <div className="survey-step">
+            <h3>Tell us about your checkout experience 💳</h3>
+            <p className="step-description">Your feedback helps us make shopping even better!</p>
 
-            {/* Step indicator */}
-            <div className={styles.stepIndicator}>
-              <div className={`${styles.stepItem} ${styles.completed}`}>
-                <div className={styles.stepNumber}>✓</div>
-                <span>Experience</span>
-              </div>
-              <div className={`${styles.stepItem} ${styles.active}`}>
-                <div className={styles.stepNumber}>2</div>
-                <span>Feedback</span>
-              </div>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>3</div>
-                <span>Contact</span>
-              </div>
-            </div>
-
-            <div className={styles.questionGroup}>
-              <Form.Label className={styles.questionLabel}>
-                What improvements would you like to see?
-              </Form.Label>
-              <Form.Control
-                as="textarea"
-                className={styles.surveyTextarea}
-                placeholder="Tell us what would make your shopping experience better..."
-                value={formData.improvements}
-                onChange={(e) => handleInputChange('improvements', e.target.value)}
-              />
-              <small className={styles.inputHint}>
-                Feel free to mention anything - website features, product selection, shipping, etc.
-              </small>
+            <div className="question-group">
+                <label className="question-label">How was the checkout process?</label>
+                <div className="rating-options">
+                    {['Smooth & Quick', 'Good', 'Okay', 'Confusing'].map(option => (
+                        <label key={option} className="rating-option">
+                            <input
+                                type="radio"
+                                name="checkoutProcess"
+                                value={option}
+                                checked={formData.checkoutProcess === option}
+                                onChange={handleInputChange}
+                            />
+                            <span className="rating-label">{option}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <div className={styles.questionGroup}>
-              <Form.Label className={styles.questionLabel}>
-                Would you recommend us to a friend?
-              </Form.Label>
-              <div className={styles.ratingOptions}>
-                {['Definitely', 'Probably', 'Maybe', 'Probably not'].map(option => (
-                  <div 
-                    key={option} 
-                    className={`${styles.ratingOption} ${formData.recommend === option ? styles.selected : ''}`}
-                    onClick={() => handleInputChange('recommend', option)}
-                  >
-                    <input
-                      type="radio"
-                      name="recommend"
-                      value={option}
-                      checked={formData.recommend === option}
-                      onChange={() => {}} // Handled by onClick above
-                      className={styles.hiddenRadio}
-                      aria-label={option}
-                    />
-                    <div className={styles.customRadio}></div>
-                    <span className={styles.ratingLabel}>
-                      {option}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
-
-      case 3:
-        return (
-          <div className={styles.surveyStep}>
-            <h3>Stay connected! 📧</h3>
-            <p className={styles.stepDescription}>
-              Get exclusive offers, new arrival updates, and style tips delivered to your inbox.
-            </p>
-
-            {/* Step indicator */}
-            <div className={styles.stepIndicator}>
-              <div className={`${styles.stepItem} ${styles.completed}`}>
-                <div className={styles.stepNumber}>✓</div>
-                <span>Experience</span>
-              </div>
-              <div className={`${styles.stepItem} ${styles.completed}`}>
-                <div className={styles.stepNumber}>✓</div>
-                <span>Feedback</span>
-              </div>
-              <div className={`${styles.stepItem} ${styles.active}`}>
-                <div className={styles.stepNumber}>3</div>
-                <span>Contact</span>
-              </div>
+            <div className="question-group">
+                <label className="question-label">Would you recommend Wardrobe & Co. to a friend?</label>
+                <div className="rating-options">
+                    {['Definitely', 'Probably', 'Maybe', 'Probably Not'].map(option => (
+                        <label key={option} className="rating-option">
+                            <input
+                                type="radio"
+                                name="wouldRecommend"
+                                value={option}
+                                checked={formData.wouldRecommend === option}
+                                onChange={handleInputChange}
+                            />
+                            <span className="rating-label">{option}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <div className={styles.questionGroup}>
-              <Form.Label className={styles.questionLabel}>
-                Email address (optional)
-              </Form.Label>
-              <Form.Control
-                type="email"
-                className={styles.surveyInput}
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-              />
-              <small className={styles.inputHint}>
-                We'll only use this to send you updates about new products and special offers
-              </small>
+            <div className="question-group">
+                <label className="question-label">What was your favorite part of shopping with us?</label>
+                <select
+                    name="favoriteFeature"
+                    value={formData.favoriteFeature}
+                    onChange={handleInputChange}
+                    className="survey-select"
+                >
+                    <option value="">Select your favorite feature</option>
+                    <option value="product-variety">Great product variety</option>
+                    <option value="easy-filtering">Easy filtering system</option>
+                    <option value="sale-prices">Amazing sale prices</option>
+                    <option value="checkout-speed">Quick checkout</option>
+                    <option value="website-design">Beautiful website design</option>
+                    <option value="product-images">High-quality product images</option>
+                </select>
             </div>
+        </div>
+    );
 
-            <div className={styles.questionGroup}>
-              <div className={styles.checkboxContainer}>
-                <Form.Check
-                  type="checkbox"
-                  id="newsletter"
-                  checked={formData.newsletter}
-                  onChange={(e) => handleInputChange('newsletter', e.target.checked)}
+    const renderStep3 = () => (
+        <div className="survey-step">
+            <h3>Help us improve! ✨</h3>
+            <p className="step-description">Your suggestions mean the world to us!</p>
+
+            <div className="question-group">
+                <label className="question-label">What could we do better? (Optional)</label>
+                <textarea
+                    name="improvements"
+                    value={formData.improvements}
+                    onChange={handleInputChange}
+                    placeholder="Share your ideas for how we can make your next visit even better..."
+                    className="survey-textarea"
+                    rows="4"
+                    onKeyDown={(e) => {
+                        // Prevent Enter key from submitting form in textarea
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.stopPropagation();
+                        }
+                    }}
                 />
-                <span className={styles.checkmark}></span>
-                <Form.Label htmlFor="newsletter" className={styles.checkboxText}>
-                  Yes, I'd like to receive email updates about new arrivals, sales, and style tips
-                </Form.Label>
-              </div>
             </div>
-          </div>
-        );
 
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className={styles.surveyForm}>
-      <Container>
-        <Card className={styles.surveyContainer}>
-          <div className={styles.surveyHeader}>
-            <h2>Share Your Thoughts 🎉</h2>
-            <p className={styles.surveyIntro}>
-              Your opinion matters! Help us improve by sharing your shopping experience with us.
-            </p>
-            <div className={styles.surveyProgress}>
-              <ProgressBar 
-                now={progressPercentage} 
-                className={styles.progressBar}
-                variant="light"
-              />
-              <div className={styles.progressText}>
-                Step {currentStep} of {totalSteps}
-              </div>
+            <div className="question-group">
+                <label className="question-label">Stay in touch? (Optional)</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="your@email.com"
+                    className="survey-input"
+                    onKeyDown={(e) => {
+                        // Prevent Enter key from submitting form in email input
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
+                    }}
+                />
+                <small className="input-hint">Get exclusive offers and style tips!</small>
             </div>
-          </div>
 
-          <Form onSubmit={handleSubmit}>
-            <div className={styles.surveyFormContent}>
-              {renderStep()}
+            <div className="question-group">
+                <label className="checkbox-container">
+                    <input
+                        type="checkbox"
+                        name="allowContact"
+                        checked={formData.allowContact}
+                        onChange={handleInputChange}
+                        onClick={(e) => e.stopPropagation()} // Prevent event bubbling
+                    />
+                    <span className="checkmark"></span>
+                    <span className="checkbox-text">
+                        Yes, I'd love to hear about new arrivals and special offers!
+                    </span>
+                </label>
+            </div>
+        </div>
+    );
 
-              <div className={styles.surveyActions}>
-                <div className={styles.actionButtons}>
-                  {currentStep > 1 && (
-                    <Button
-                      variant="outline-primary"
-                      className={styles.prevBtn}
-                      onClick={handlePrev}
-                    >
-                      ← Previous
-                    </Button>
-                  )}
-                  
-                  {currentStep < totalSteps ? (
-                    <Button
-                      variant="primary"
-                      className={styles.nextBtn}
-                      onClick={handleNext}
-                    >
-                      Next →
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      className={styles.submitBtn}
-                    >
-                      Submit Feedback 🎉
-                    </Button>
-                  )}
+    return (
+        <div className="survey-form">
+            <div className="survey-container">
+                <div className="survey-header">
+                    <h2>We'd love your feedback! 💝</h2>
+                    <p className="survey-intro">
+                        Your opinion helps us create an even better shopping experience.
+                        This will only take 2 minutes!
+                    </p>
+                    {renderProgressBar()}
                 </div>
 
-                <Button
-                  variant="link"
-                  className={styles.skipSurveyBtn}
-                  onClick={onSkipSurvey}
-                >
-                  Skip survey for now
-                </Button>
-              </div>
+                <form onSubmit={handleSubmit} className="survey-form-content">
+                    {currentStep === 1 && renderStep1()}
+                    {currentStep === 2 && renderStep2()}
+                    {currentStep === 3 && renderStep3()}
+
+                    <div className="survey-actions">
+                        <div className="action-buttons">
+                            {currentStep > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={handlePrevious}
+                                    className="btn-secondary"
+                                >
+                                    ← Previous
+                                </button>
+                            )}
+
+                            {currentStep < totalSteps ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="btn-primary"
+                                >
+                                    Next →
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="btn-primary"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Submitting...' : 'Submit Feedback 🎉'}
+                                </button>
+                            )}
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onSkipSurvey();
+                            }}
+                            className="skip-survey-btn"
+                        >
+                            Skip for now
+                        </button>
+                    </div>
+                </form>
             </div>
-          </Form>
-        </Card>
-      </Container>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default SurveyForm;

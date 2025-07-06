@@ -1,33 +1,25 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
 import ProductCard from './ProductCard';
-import styles from './ProductList.module.css';
 
 const ProductList = ({ products, onAddToCart }) => {
-  if (products.length === 0) {
     return (
-      <Container>
-        <div className={styles.emptyProducts}>
-          No products found matching your criteria.
-        </div>
-      </Container>
-    );
-  }
+        <section className="Product-list">
+            {products.map(product => (
+                <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={onAddToCart}
+                />
+            ))}
 
-  return (
-    <Container fluid>
-      <Row className="g-4">
-        {products.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <ProductCard
-              product={product}
-              onAddToCart={onAddToCart}
-            />
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
+            {/* Engage: Friendly messaging when no products */}
+            {products.length === 0 && (
+                <p style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '1.1em' }}>
+                    We couldn't find any items matching your filters. Try adjusting your selection to discover more great pieces!
+                </p>
+            )}
+        </section>
+    );
 };
 
 export default ProductList;

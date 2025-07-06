@@ -1,311 +1,281 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
-import BackButton from './BackButton';
-import styles from './CheckoutForm.module.css';
 
 const CheckoutForm = ({ cart, onSubmitOrder, onBackToCart }) => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: ''
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    
-    // Required field validation
-    const requiredFields = ['firstName', 'lastName', 'email', 'address', 'city', 'state', 'zipCode', 'cardNumber', 'expiryDate', 'cvv', 'nameOnCard'];
-    
-    requiredFields.forEach(field => {
-      if (!formData[field].trim()) {
-        newErrors[field] = 'This field is required';
-      }
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: '',
+        nameOnCard: ''
     });
 
-    // Email validation
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
+    const [errors, setErrors] = useState({});
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      onSubmitOrder(formData);
-    }
-  };
+        // Clear error when user starts typing
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+    };
 
-  const totalPrice = cart.reduce((sum, item) => {
-    return sum + (item.salePrice !== undefined ? item.salePrice : item.price);
-  }, 0);
+    const validateForm = () => {
+        const newErrors = {};
 
-  return (
-    <div className={styles.checkoutForm}>
-      <Container>
-        <div className={styles.checkoutHeader}>
-          <BackButton onClick={onBackToCart} />
-          <h2>Checkout</h2>
-        </div>
+        if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+        if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+        if (!formData.email.trim()) newErrors.email = 'Email is required';
+        if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+        if (!formData.address.trim()) newErrors.address = 'Address is required';
+        if (!formData.city.trim()) newErrors.city = 'City is required';
+        if (!formData.state.trim()) newErrors.state = 'State is required';
+        if (!formData.zipCode.trim()) newErrors.zipCode = 'ZIP code is required';
+        if (!formData.cardNumber.trim()) newErrors.cardNumber = 'Card number is required';
+        if (!formData.expiryDate.trim()) newErrors.expiryDate = 'Expiry date is required';
+        if (!formData.cvv.trim()) newErrors.cvv = 'CVV is required';
+        if (!formData.nameOnCard.trim()) newErrors.nameOnCard = 'Name on card is required';
 
-        <Row>
-          <Col lg={8}>
-            <Card className={styles.checkoutFormContainer}>
-              <Card.Body>
-                <Form onSubmit={handleSubmit}>
-                  <div className={styles.formSection}>
-                    <h3>Shipping Information</h3>
-                    <Row>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>First Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.firstName}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.firstName}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Last Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.lastName}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.lastName}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                    </Row>
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Email Address</Form.Label>
-                      <Form.Control
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        isInvalid={!!errors.email}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.email}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            onSubmitOrder(formData);
+        }
+    };
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Street Address</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        isInvalid={!!errors.address}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.address}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+    const calculateTotal = () => {
+        return cart.reduce((total, item) => {
+            const price = item.salePrice || item.price;
+            return total + price;
+        }, 0);
+    };
 
-                    <Row>
-                      <Col md={4}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>City</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.city}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.city}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col md={4}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>State</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="state"
-                            value={formData.state}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.state}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.state}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col md={4}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>ZIP Code</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="zipCode"
-                            value={formData.zipCode}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.zipCode}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.zipCode}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </div>
+    return (
+        <div className="checkout-form">
+            <div className="checkout-header">
+                <h2>Almost there! Let's complete your order 🛍️</h2>
+                <button onClick={onBackToCart} className="btn-secondary">
+                    ← Back to Cart
+                </button>
+            </div>
 
-                  <div className={styles.formSection}>
-                    <h3>Payment Information</h3>
-                    <p className={styles.paymentSecurity}>
-                      🔒 Your payment information is secure and encrypted
-                    </p>
-                    
-                    <Form.Group className="mb-3">
-                      <Form.Label>Name on Card</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="nameOnCard"
-                        value={formData.nameOnCard}
-                        onChange={handleInputChange}
-                        isInvalid={!!errors.nameOnCard}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.nameOnCard}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+            <div className="checkout-content">
+                <form onSubmit={handleSubmit} className="checkout-form-container">
+                    {/* Shipping Information */}
+                    <div className="form-section">
+                        <h3>Where should we send your amazing finds?</h3>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="firstName">First Name *</label>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    className={errors.firstName ? 'error' : ''}
+                                />
+                                {errors.firstName && <span className="error-message">{errors.firstName}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="lastName">Last Name *</label>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    className={errors.lastName ? 'error' : ''}
+                                />
+                                {errors.lastName && <span className="error-message">{errors.lastName}</span>}
+                            </div>
+                        </div>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Card Number</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="cardNumber"
-                        placeholder="1234 5678 9012 3456"
-                        value={formData.cardNumber}
-                        onChange={handleInputChange}
-                        isInvalid={!!errors.cardNumber}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.cardNumber}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="email">Email *</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className={errors.email ? 'error' : ''}
+                                />
+                                {errors.email && <span className="error-message">{errors.email}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="phone">Phone Number *</label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    className={errors.phone ? 'error' : ''}
+                                />
+                                {errors.phone && <span className="error-message">{errors.phone}</span>}
+                            </div>
+                        </div>
 
-                    <Row>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Expiry Date</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="expiryDate"
-                            placeholder="MM/YY"
-                            value={formData.expiryDate}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.expiryDate}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.expiryDate}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>CVV</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="cvv"
-                            placeholder="123"
-                            value={formData.cvv}
-                            onChange={handleInputChange}
-                            isInvalid={!!errors.cvv}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.cvv}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </div>
+                        <div className="form-group">
+                            <label htmlFor="address">Street Address *</label>
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleInputChange}
+                                className={errors.address ? 'error' : ''}
+                            />
+                            {errors.address && <span className="error-message">{errors.address}</span>}
+                        </div>
 
-                  <Button 
-                    variant="primary" 
-                    type="submit" 
-                    size="lg"
-                    className={styles.completeOrderBtn}
-                  >
-                    Complete Order - ${totalPrice.toFixed(2)}
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col lg={4}>
-            <Card className={styles.orderSummary}>
-              <Card.Body>
-                <h3>Order Summary</h3>
-                <div className={styles.summaryItems}>
-                  {cart.map((item, index) => (
-                    <div key={index} className={styles.summaryItem}>
-                      <span className={styles.itemName}>{item.name}</span>
-                      <span className={styles.itemPrice}>
-                        ${(item.salePrice !== undefined ? item.salePrice : item.price).toFixed(2)}
-                      </span>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="city">City *</label>
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleInputChange}
+                                    className={errors.city ? 'error' : ''}
+                                />
+                                {errors.city && <span className="error-message">{errors.city}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="state">State *</label>
+                                <input
+                                    type="text"
+                                    id="state"
+                                    name="state"
+                                    value={formData.state}
+                                    onChange={handleInputChange}
+                                    className={errors.state ? 'error' : ''}
+                                />
+                                {errors.state && <span className="error-message">{errors.state}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="zipCode">ZIP Code *</label>
+                                <input
+                                    type="text"
+                                    id="zipCode"
+                                    name="zipCode"
+                                    value={formData.zipCode}
+                                    onChange={handleInputChange}
+                                    className={errors.zipCode ? 'error' : ''}
+                                />
+                                {errors.zipCode && <span className="error-message">{errors.zipCode}</span>}
+                            </div>
+                        </div>
                     </div>
-                  ))}
+
+                    {/* Payment Information */}
+                    <div className="form-section">
+                        <h3>Payment Information</h3>
+                        <p className="payment-security">🔒 Your payment information is secure and encrypted</p>
+
+                        <div className="form-group">
+                            <label htmlFor="nameOnCard">Name on Card *</label>
+                            <input
+                                type="text"
+                                id="nameOnCard"
+                                name="nameOnCard"
+                                value={formData.nameOnCard}
+                                onChange={handleInputChange}
+                                className={errors.nameOnCard ? 'error' : ''}
+                            />
+                            {errors.nameOnCard && <span className="error-message">{errors.nameOnCard}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="cardNumber">Card Number *</label>
+                            <input
+                                type="text"
+                                id="cardNumber"
+                                name="cardNumber"
+                                value={formData.cardNumber}
+                                onChange={handleInputChange}
+                                placeholder="1234 5678 9012 3456"
+                                className={errors.cardNumber ? 'error' : ''}
+                            />
+                            {errors.cardNumber && <span className="error-message">{errors.cardNumber}</span>}
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label htmlFor="expiryDate">Expiry Date *</label>
+                                <input
+                                    type="text"
+                                    id="expiryDate"
+                                    name="expiryDate"
+                                    value={formData.expiryDate}
+                                    onChange={handleInputChange}
+                                    placeholder="MM/YY"
+                                    className={errors.expiryDate ? 'error' : ''}
+                                />
+                                {errors.expiryDate && <span className="error-message">{errors.expiryDate}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="cvv">CVV *</label>
+                                <input
+                                    type="text"
+                                    id="cvv"
+                                    name="cvv"
+                                    value={formData.cvv}
+                                    onChange={handleInputChange}
+                                    placeholder="123"
+                                    className={errors.cvv ? 'error' : ''}
+                                />
+                                {errors.cvv && <span className="error-message">{errors.cvv}</span>}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" className="btn-primary complete-order-btn">
+                        Complete Order - ${calculateTotal().toFixed(2)}
+                    </button>
+                </form>
+
+                {/* Order Summary */}
+                <div className="order-summary">
+                    <h3>Your Order Summary</h3>
+                    <div className="summary-items">
+                        {cart.map((item, index) => (
+                            <div key={`${item.id}-${index}`} className="summary-item">
+                                <span className="item-name">{item.name}</span>
+                                <span className="item-price">
+                                    ${(item.salePrice || item.price).toFixed(2)}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="summary-total">
+                        <strong>Total: ${calculateTotal().toFixed(2)}</strong>
+                    </div>
                 </div>
-                <div className={styles.summaryTotal}>
-                  <strong>Total: ${totalPrice.toFixed(2)}</strong>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
+            </div>
+        </div>
+    );
 };
 
 export default CheckoutForm;

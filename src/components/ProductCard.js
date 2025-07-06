@@ -1,69 +1,59 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product, onAddToCart }) => {
-  const discountPercentage = product.salePrice
-    ? Math.round(((product.price - product.salePrice) / product.price) * 100)
-    : null;
+    const discountPercent = product.salePrice
+        ? Math.round(((product.price - product.salePrice) / product.price) * 100)
+        : 0;
 
-  return (
-    <Card className={styles.productCard}>
-      <Card.Img
-        variant="top"
-        src={product.image}
-        alt={product.name}
-        className={styles.productImg}
-        loading="lazy"
-        onError={(e) => {
-          e.target.src = 'https://via.placeholder.com/200x250?text=No+Image';
-        }}
-      />
-      <Card.Body>
-        <Card.Title as="h3">{product.name}</Card.Title>
+    const handleAddToCart = () => {
+        onAddToCart(product);
+    };
 
-        {discountPercentage && (
-          <div className={styles.discountBadge}>
-            {discountPercentage}% OFF
-          </div>
-        )}
+    return (
+        <div className="Product-card">
+            <img
+                src={product.image}
+                alt={product.name}
+                className="Product-img"
+                loading="lazy"
+                onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/200x250?text=No+Image';
+                }}
+            />
 
-        <div className={styles.productDetails}>
-          <div className={styles.productMaterial}>{product.material}</div>
-          {product.sizes && (
-            <div className={styles.productSizes}>
-              Sizes: {product.sizes.join(', ')}
-            </div>
-          )}
+            <h3>{product.name}</h3>
+
+            {/* Informative: Clear product details */}
+            <p style={{ fontSize: '0.9em', color: 'var(--text-color)', opacity: 0.8 }}>
+                {product.material} • {product.sizes?.join(', ')}
+            </p>
+
+            <p className="Product-price">
+                {product.salePrice ? (
+                    <>
+                        <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                            ${product.price.toFixed(2)}
+                        </span>{' '}
+                        <span className="sale-price">${product.salePrice.toFixed(2)}</span>
+                    </>
+                ) : (
+                    <span>${product.price.toFixed(2)}</span>
+                )}
+            </p>
+
+            {/* Incite to Action: Urgent sale messaging */}
+            {product.salePrice && (
+                <p className="discount-badge">
+                    {discountPercent}% OFF - Limited Time!
+                </p>
+            )}
+
+            {/* Incite to Action: Clear call-to-action */}
+            <button onClick={handleAddToCart}>
+                Add to Cart
+            </button>
         </div>
-
-        <div className={styles.productPrice}>
-          {product.salePrice ? (
-            <>
-              <span className={styles.originalPrice}>
-                ${product.price.toFixed(2)}
-              </span>
-              <span className={styles.salePrice}>
-                ${product.salePrice.toFixed(2)}
-              </span>
-            </>
-          ) : (
-            <span className="text-primary-custom">
-              ${product.price.toFixed(2)}
-            </span>
-          )}
-        </div>
-
-        <Button
-          variant="primary"
-          className={styles.addToCartBtn}
-          onClick={() => onAddToCart(product)}
-        >
-          Add to Cart
-        </Button>
-      </Card.Body>
-    </Card>
-  );
+    );
 };
 
 export default ProductCard;

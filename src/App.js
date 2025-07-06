@@ -6,7 +6,7 @@ import {
   useNavigate,
   useLocation
 } from 'react-router-dom';
-import './App.css'; // Keep the original App.css import for now
+import './App.css';
 import Header from './components/Header';
 import FiltersSidebar from './components/FiltersSidebar';
 import ProductList from './components/ProductList';
@@ -408,48 +408,41 @@ function App() {
         );
       default: // 'products'
         return (
-          <div className="container-fluid">
+          <>
             {activeSection && (
-              <div className="row">
-                <div className="col-lg-3 col-md-4">
-                  <FiltersSidebar
-                    activeSection={activeSection}
-                    filters={filters}
-                    onFilterChange={handleCheckboxChange}
-                    saleGenderFilters={saleGenderFilters}
-                    saleSectionFilters={saleSectionFilters}
-                    onSaleGenderToggle={toggleSaleGender}
-                    onSaleSectionToggle={toggleSaleSection}
-                    productData={productData}
-                  />
-                </div>
-                <div className="col-lg-9 col-md-8">
-                  <ProductList
-                    products={filteredProducts}
-                    onAddToCart={handleAddToCart}
-                  />
-                </div>
+              <div className="Main-content">
+                <FiltersSidebar
+                  activeSection={activeSection}
+                  filters={filters}
+                  onFilterChange={handleCheckboxChange}
+                  saleGenderFilters={saleGenderFilters}
+                  saleSectionFilters={saleSectionFilters}
+                  onSaleGenderToggle={toggleSaleGender}
+                  onSaleSectionToggle={toggleSaleSection}
+                  productData={productData}
+                />
+
+                <ProductList
+                  products={filteredProducts}
+                  onAddToCart={handleAddToCart}
+                />
               </div>
             )}
-          </div>
+          </>
         );
     }
   };
 
   return (
     <div className="App">
-      <div className="Top-strip">
-        <div className="App-header">
-          <Header
-            onSectionChange={handleSectionChange}
-            onFiltersReset={handleFiltersReset}
-            cartCount={cart.length}
-            onViewCart={handleViewCart}
-            onGoHome={handleGoHome}
-            currentView={currentView}
-          />
-        </div>
-      </div>
+      <Header
+        onSectionChange={handleSectionChange}
+        onFiltersReset={handleFiltersReset}
+        cartCount={cart.length}
+        onViewCart={handleViewCart}
+        onGoHome={handleGoHome}
+        currentView={currentView}
+      />
 
       <NavigationBreadcrumb
         currentView={currentView}

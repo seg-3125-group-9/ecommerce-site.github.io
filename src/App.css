@@ -2,24 +2,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Quicksand:wght@400;600&display=swap');
 
-/* CSS Variables - CORRECTED to maintain light theme */
+/* CSS Variables as specified in context.md */
 :root {
   --primary-color: #222;
   --accent-color: #e63946;
   --bg-color: #f8f9fa;
   --text-color: #333;
   --sale-highlight: red;
-  --white: #ffffff;
-  --light-gray: #e0e0e0;
-  --medium-gray: #ccc;
 }
 
-/* Set page background color - LIGHT THEME */
+/* Set page background color */
 body,
 html {
   margin: 0;
   padding: 0;
-  background-color: #f0f4f8; /* Keep the light bluish grey background */
+  background-color: var(--bg-color);
   min-height: 100vh;
   font-family: 'Quicksand', sans-serif;
   color: var(--text-color);
@@ -80,7 +77,6 @@ body {
 .App {
   max-width: 1200px;
   margin: auto;
-  background-color: transparent; /* Let the body background show through */
 }
 
 h1,
@@ -179,7 +175,8 @@ h4 {
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 6px;
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
+  /* keeps card white */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -220,15 +217,10 @@ button:hover {
 }
 
 .discount-badge {
-  background: linear-gradient(135deg, var(--accent-color), #ff4757);
-  color: white;
+  color: var(--primary-color);
   font-weight: bold;
   margin-top: -8px;
   margin-bottom: 8px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.8em;
-  display: inline-block;
 }
 
 /* Cart View Styles */
@@ -1099,12 +1091,11 @@ button:hover {
   font-size: 0.8em;
 }
 
-/* Homepage Styles - ENSURE LIGHT THEME */
+/* Homepage Styles */
 .homepage {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: transparent; /* Let the light background show through */
 }
 
 .hero-section {
@@ -1169,7 +1160,7 @@ button:hover {
 }
 
 .category-card {
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;
@@ -1238,7 +1229,7 @@ button:hover {
 }
 
 .featured-product-card {
-  background-color: white; /* Ensure cards are white */
+  background-color: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1275,7 +1266,7 @@ button:hover {
 }
 
 .why-choose-us {
-  background-color: white; /* Ensure section is white */
+  background-color: white;
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

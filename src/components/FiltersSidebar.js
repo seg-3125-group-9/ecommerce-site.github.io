@@ -1,228 +1,268 @@
 import React from 'react';
-import { Card, Form, Button } from 'react-bootstrap';
-import styles from './FiltersSidebar.module.css';
 
-const FiltersSidebar = ({ 
-  activeSection, 
-  filters, 
-  onFilterChange, 
-  saleGenderFilters, 
-  saleSectionFilters, 
-  onSaleGenderToggle, 
-  onSaleSectionToggle, 
-  productData 
-}) => {
-  
-  const getAvailableFilters = () => {
-    if (activeSection === 'sale') {
-      const combinedFilters = {};
-      
-      // Combine all filter types for sale products
-      ['size', 'color', 'material', 'price', 'style', 'trend'].forEach(filterType => {
-        const allOptions = new Set();
-        
-        // Get options from all sections that might be on sale
-        ['tops', 'bottoms', 'shoes', 'dresses'].forEach(section => {
-          const filtersForSection = getFiltersForSection(section);
-          if (filtersForSection[filterType]) {
-            filtersForSection[filterType].forEach(option => allOptions.add(option));
-          }
-        });
-        
-        if (allOptions.size > 0) {
-          combinedFilters[filterType] = Array.from(allOptions);
-        }
-      });
-      
-      return combinedFilters;
-    }
-
-    if (activeSection === 'all') {
-      return getAllCombinedFilters();
-    }
-
-    if (activeSection.endsWith('-all')) {
-      const gender = activeSection.split('-')[0];
-      return getFiltersForGender(gender);
-    }
-
-    const section = activeSection.split('-')[1];
-    return getFiltersForSection(section);
-  };
-
-  const getFiltersForSection = (section) => {
-    const filtersPerSection = {
-      tops: {
+const filtersPerSection = {
+    tops: {
         size: ['XS', 'S', 'M', 'L', 'XL'],
         color: ['Red', 'Black', 'Yellow', 'White', 'Blue', 'Green', 'Pink'],
         material: ['Cotton', 'Polyester', 'Linen', 'Silk', 'Fleece'],
         price: ['$10 and under', '$10–$20', '$20–$30', '$30–$40', '$40–$50', '$50 and up'],
         style: ['Casual', 'Sporty', 'Elegant'],
         trend: ['New', 'Bestseller', 'Classic']
-      },
-      bottoms: {
+    },
+    bottoms: {
         size: ['XS', 'S', 'M', 'L', 'XL'],
         color: ['Blue', 'Gray', 'Black', 'Beige', 'White'],
         material: ['Denim', 'Cotton', 'Fleece', 'Spandex', 'Linen'],
         price: ['$10 and under', '$10–$20', '$20–$30', '$30–$40', '$40–$50', '$50 and up'],
         style: ['Casual', 'Formal'],
         trend: ['New', 'Trending']
-      },
-      shoes: {
+    },
+    shoes: {
         size: ['1', '2', '3', '7', '8', '9', '10', '11'],
         color: ['Beige', 'White', 'Black', 'Brown', 'Pink', 'Red', 'Blue', 'Gray', 'Green'],
         material: ['Leather', 'Mesh', 'Suede', 'Rubber', 'Canvas'],
         price: ['$10 and under', '$10–$20', '$20–$30', '$30–$40', '$40–$50', '$50 and up'],
         style: ['Sneakers', 'Boots', 'Flats', 'Sandals'],
         trend: ['Popular', 'New', 'On Sale']
-      },
-      dresses: {
+    },
+    dresses: {
         size: ['XS', 'S', 'M', 'L', 'XL'],
         color: ['Pink', 'Black', 'White', 'Red', 'Blue'],
         material: ['Silk', 'Cotton', 'Linen', 'Polyester'],
         price: ['$10 and under', '$10–$20', '$20–$30', '$30–$40', '$40–$50', '$50 and up'],
         style: ['Formal', 'Casual', 'Elegant'],
         trend: ['Trending', 'New', 'Classic']
-      }
-    };
-    
-    return filtersPerSection[section] || {};
-  };
+    }
+};
 
-  const getFiltersForGender = (gender) => {
-    const sections = gender === 'women' ? ['tops', 'bottoms', 'shoes', 'dresses'] 
-                   : gender === 'men' ? ['tops', 'bottoms', 'shoes']
-                   : ['tops', 'bottoms', 'shoes'];
+const navStructure = {
+    'SALE: UP TO 50% OFF': [],
+    WOMEN: ['tops', 'bottoms', 'shoes', 'dresses'],
+    MEN: ['tops', 'bottoms', 'shoes'],
+    KIDS: ['tops', 'bottoms', 'shoes']
+};
 
-    const combinedFilters = {};
-    
-    sections.forEach(section => {
-      const sectionFilters = getFiltersForSection(section);
-      Object.keys(sectionFilters).forEach(filterType => {
-        if (!combinedFilters[filterType]) {
-          combinedFilters[filterType] = new Set();
-        }
-        sectionFilters[filterType].forEach(option => 
-          combinedFilters[filterType].add(option)
-        );
-      });
-    });
+const FiltersSidebar = ({
+    activeSection,
+    filters,
+    onFilterChange,
+    saleGenderFilters,
+    saleSectionFilters,
+    onSaleGenderToggle,
+    onSaleSectionToggle,
+    productData
+}) => {
 
-    Object.keys(combinedFilters).forEach(filterType => {
-      combinedFilters[filterType] = Array.from(combinedFilters[filterType]);
-    });
-
-    return combinedFilters;
-  };
-
-  const getAllCombinedFilters = () => {
-    const allSections = ['tops', 'bottoms', 'shoes', 'dresses'];
-    const combinedFilters = {};
-    
-    allSections.forEach(section => {
-      const sectionFilters = getFiltersForSection(section);
-      Object.keys(sectionFilters).forEach(filterType => {
-        if (!combinedFilters[filterType]) {
-          combinedFilters[filterType] = new Set();
-        }
-        sectionFilters[filterType].forEach(option => 
-          combinedFilters[filterType].add(option)
-        );
-      });
-    });
-
-    Object.keys(combinedFilters).forEach(filterType => {
-      combinedFilters[filterType] = Array.from(combinedFilters[filterType]);
-    });
-
-    return combinedFilters;
-  };
-
-  const availableFilters = getAvailableFilters();
-
-  const getAvailableSections = () => {
-    if (saleGenderFilters.length === 0) return [];
-    
-    const sections = new Set();
-    saleGenderFilters.forEach(gender => {
-      if (gender === 'Women') {
-        ['tops', 'bottoms', 'shoes', 'dresses'].forEach(s => sections.add(s));
-      } else if (gender === 'Men') {
-        ['tops', 'bottoms', 'shoes'].forEach(s => sections.add(s));
-      } else if (gender === 'Kids') {
-        ['tops', 'bottoms', 'shoes'].forEach(s => sections.add(s));
-      }
-    });
-    return Array.from(sections);
-  };
-
-  const availableSections = getAvailableSections();
-
-  return (
-    <Card className={styles.filtersVertical}>
-      <Card.Body>
-        {activeSection === 'sale' && (
-          <div className={styles.saleFilters}>
-            <h4>🔥 Sale Filters</h4>
-            <div className={styles.filterGroup}>
-              <h5>Shop by Category</h5>
-              {['Women', 'Men', 'Kids'].map((gender) => (
-                <Form.Check
-                  key={gender}
-                  type="checkbox"
-                  id={`gender-${gender.toLowerCase()}`}
-                  label={gender}
-                  checked={saleGenderFilters.includes(gender)}
-                  onChange={() => onSaleGenderToggle(gender)}
-                />
-              ))}
-            </div>
-            
-            {saleGenderFilters.length > 0 && (
-              <div className={styles.filterGroup}>
-                <h5>Product Type</h5>
-                {availableSections.map((section) => (
-                  <Form.Check
-                    key={section}
-                    type="checkbox"
-                    id={`section-${section}`}
-                    label={section.charAt(0).toUpperCase() + section.slice(1)}
-                    checked={saleSectionFilters.includes(section)}
-                    onChange={() => onSaleSectionToggle(section)}
-                  />
+    const renderSaleFilters = () => (
+        <>
+            {/* Gender filters */}
+            <div>
+                <h4>Shop by Gender</h4>
+                {['Women', 'Men', 'Kids'].map(gender => (
+                    <label key={gender}>
+                        <input
+                            type="checkbox"
+                            checked={saleGenderFilters.includes(gender)}
+                            onChange={() => onSaleGenderToggle(gender)}
+                        />
+                        {gender}
+                    </label>
                 ))}
-              </div>
-            )}
-          </div>
-        )}
+            </div>
 
-        {availableFilters && Object.entries(availableFilters).map(([category, options]) => (
-          <div key={category} className={styles.filterGroup}>
-            <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
-            {options.map((option) => (
-              <Form.Check
-                key={option}
-                type="checkbox"
-                id={`${category}-${option}`}
-                label={option}
-                checked={(filters[category] || []).includes(option)}
-                onChange={() => onFilterChange(category, option)}
-              />
-            ))}
-          </div>
-        ))}
+            {/* Category filters */}
+            <div>
+                <h4>Category</h4>
+                {(() => {
+                    let applicableSections = [];
+                    if (saleGenderFilters.length > 0) {
+                        const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
+                        applicableSections = Array.from(new Set(filtered.map(p => p.section)));
+                    } else {
+                        applicableSections = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
+                    }
 
-        <Button 
-          variant="outline-secondary" 
-          size="sm"
-          className={styles.resetFilters}
-          onClick={() => window.location.reload()}
-        >
-          Reset All Filters
-        </Button>
-      </Card.Body>
-    </Card>
-  );
+                    return applicableSections.map(section => (
+                        <label key={section}>
+                            <input
+                                type="checkbox"
+                                checked={saleSectionFilters.includes(section)}
+                                onChange={() => onSaleSectionToggle(section)}
+                            />
+                            {section.charAt(0).toUpperCase() + section.slice(1)}
+                        </label>
+                    ));
+                })()}
+            </div>
+
+            {/* Combined filters for sale items */}
+            {(() => {
+                let subsectionsToUse = [];
+                if (saleSectionFilters.length > 0) {
+                    subsectionsToUse = saleSectionFilters;
+                } else if (saleGenderFilters.length > 0) {
+                    const filtered = productData.filter(p => saleGenderFilters.includes(p.gender) && p.salePrice);
+                    subsectionsToUse = Array.from(new Set(filtered.map(p => p.section)));
+                } else {
+                    subsectionsToUse = Array.from(new Set(productData.filter(p => p.salePrice).map(p => p.section)));
+                }
+
+                const combinedFilters = {};
+                subsectionsToUse.forEach(section => {
+                    const sectionFilters = filtersPerSection[section];
+                    if (sectionFilters) {
+                        Object.entries(sectionFilters).forEach(([cat, vals]) => {
+                            if (!combinedFilters[cat]) combinedFilters[cat] = new Set();
+                            vals.forEach(v => combinedFilters[cat].add(v));
+                        });
+                    }
+                });
+
+                const combinedFiltersArr = Object.entries(combinedFilters).map(
+                    ([cat, valSet]) => [cat, Array.from(valSet)]
+                );
+
+                return combinedFiltersArr.map(([category, values]) => (
+                    <div key={category}>
+                        <h4>{category.toUpperCase()}</h4>
+                        {values.map(value => (
+                            <label key={value}>
+                                <input
+                                    type="checkbox"
+                                    checked={(filters[category] || []).includes(value)}
+                                    onChange={() => onFilterChange(category, value)}
+                                />
+                                {value}
+                            </label>
+                        ))}
+                    </div>
+                ));
+            })()}
+        </>
+    );
+
+    const renderRegularFilters = () => {
+        // Handle "all" section specifically
+        if (activeSection === 'all') {
+            const allFilters = getAllSectionFilters();
+            return Object.entries(allFilters).map(([category, values]) => (
+                <div key={category}>
+                    <h4>{category.toUpperCase()}</h4>
+                    {values.map(value => (
+                        <label key={value}>
+                            <input
+                                type="checkbox"
+                                checked={(filters[category] || []).includes(value)}
+                                onChange={() => onFilterChange(category, value)}
+                            />
+                            {value}
+                        </label>
+                    ))}
+                </div>
+            ));
+        }
+
+        const keyPart = activeSection.split('-')[1];
+        if (activeSection.endsWith('-all')) {
+            const gender = activeSection.split('-')[0].toUpperCase();
+            const subsections = navStructure[gender] || [];
+
+            const combinedFilters = {};
+            subsections.forEach(section => {
+                const sectionFilters = filtersPerSection[section];
+                if (sectionFilters) {
+                    Object.entries(sectionFilters).forEach(([cat, vals]) => {
+                        if (!combinedFilters[cat]) {
+                            combinedFilters[cat] = new Set();
+                        }
+                        vals.forEach(v => combinedFilters[cat].add(v));
+                    });
+                }
+            });
+
+            const combinedFiltersArr = Object.entries(combinedFilters).map(
+                ([cat, valSet]) => [cat, Array.from(valSet)]
+            );
+
+            return combinedFiltersArr.map(([category, values]) => (
+                <div key={category}>
+                    <h4>{category.toUpperCase()}</h4>
+                    {values.map(value => (
+                        <label key={value}>
+                            <input
+                                type="checkbox"
+                                checked={(filters[category] || []).includes(value)}
+                                onChange={() => onFilterChange(category, value)}
+                            />
+                            {value}
+                        </label>
+                    ))}
+                </div>
+            ));
+        } else {
+            return Object.entries(filtersPerSection[keyPart] || {}).map(([category, values]) => (
+                <div key={category}>
+                    <h4>{category.toUpperCase()}</h4>
+                    {values.map(value => (
+                        <label key={value}>
+                            <input
+                                type="checkbox"
+                                checked={(filters[category] || []).includes(value)}
+                                onChange={() => onFilterChange(category, value)}
+                            />
+                            {value}
+                        </label>
+                    ))}
+                </div>
+            ));
+        }
+    };
+
+    // For "all" section, combine all filter options
+    const getAllSectionFilters = () => {
+        const combinedFilters = {
+            size: new Set(),
+            color: new Set(),
+            material: new Set(),
+            price: ['$10 and under', '$10–$20', '$20–$30', '$30–$40', '$40–$50', '$50 and up'],
+            style: new Set(),
+            trend: new Set()
+        };
+
+        // Combine all unique values from all sections
+        Object.values(filtersPerSection).forEach(sectionFilters => {
+            Object.keys(combinedFilters).forEach(filterKey => {
+                if (sectionFilters[filterKey] && filterKey !== 'price') {
+                    sectionFilters[filterKey].forEach(value => combinedFilters[filterKey].add(value));
+                }
+            });
+        });
+
+        // Convert Sets back to arrays
+        Object.keys(combinedFilters).forEach(key => {
+            if (key !== 'price') {
+                combinedFilters[key] = Array.from(combinedFilters[key]).sort();
+            }
+        });
+
+        return combinedFilters;
+    };
+
+    const getCurrentFilters = () => {
+        if (activeSection === 'all') {
+            return getAllSectionFilters();
+        }
+        return filtersPerSection[activeSection] || {};
+    };
+
+    return (
+        <aside className="Filters-vertical">
+            <h2>Find Your Perfect Fit</h2>
+            {activeSection === 'sale' ? renderSaleFilters() :
+                activeSection === 'all' ? renderRegularFilters() :
+                    renderRegularFilters()}
+        </aside>
+    );
 };
 
 export default FiltersSidebar;
